@@ -1,8 +1,9 @@
-package service;
+package com.vetClinic.service;
 
-import domain.Pet;
+import com.vetClinic.domain.Pet;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import repository.PetRepository;
+import com.vetClinic.repository.PetRepository;
 
 import java.util.ArrayList;
 
@@ -35,5 +36,15 @@ public class PetService {
     public void deletePet(int id){
         petRepository.deleteById(id);
     }
+
+    public ArrayList<Pet> getPetsByIdOwn(int idOwn){
+        return  petRepository.getPetsByIdOwn(idOwn);
+    }
+
+    @Transactional
+    public void recodingConsultation(int id){
+         petRepository.recodingConsultation(id);
+    }
+
 
 }

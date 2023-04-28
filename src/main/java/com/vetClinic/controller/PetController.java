@@ -1,14 +1,14 @@
-package controller;
+package com.vetClinic.controller;
 
-import domain.Pet;
+import com.vetClinic.domain.Pet;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import service.PetService;
-import utils.ApplicationError;
+import com.vetClinic.service.PetService;
+import com.vetClinic.utils.ApplicationError;
 import java.util.ArrayList;
 
 @RestController
@@ -72,7 +72,7 @@ public class PetController {
                     new ApplicationError("Pet not updated", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(pet1, HttpStatus.OK);
+        return new ResponseEntity<>(petService.updatePet(pet), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -84,7 +84,24 @@ public class PetController {
                     new ApplicationError("Pet not deleted", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(pet, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/myPets/{id}")
+    public ResponseEntity<?> getPetsByIdOwn(@PathVariable int id) {
+        ArrayList<Pet> pets = petService.getPetsByIdOwn(id);
+        if (pets == null) {
+            return new ResponseEntity<>(
+                    new ApplicationError("Pets not found", HttpStatus.NOT_FOUND.value()),
+                    HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(pets, HttpStatus.OK);
+    }
+
+    @PutMapping("/recCons/{id}")
+    public ResponseEntity<?> recodingConsultation(@PathVariable int id) {
+        petService.recodingConsultation(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

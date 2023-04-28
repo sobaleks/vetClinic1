@@ -1,6 +1,6 @@
-package controller;
+package com.vetClinic.controller;
 
-import domain.VetCard;
+import com.vetClinic.domain.VetCard;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,19 +8,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import service.VetCardService;
-import utils.ApplicationError;
+import com.vetClinic.service.VetCardService;
+import com.vetClinic.utils.ApplicationError;
 
 import java.util.ArrayList;
 @RestController
-@RequestMapping("/vetCard")
+@RequestMapping("/card")
 public class VetCardController {
 
 
         VetCardService vetCardService;
 
         @Autowired
-        public VetCardController(VetCardService vatCardService) {
+        public VetCardController(VetCardService vetCardService) {
             this.vetCardService = vetCardService;
         }
 
@@ -75,7 +75,7 @@ public class VetCardController {
                         new ApplicationError("VetCard not updated", HttpStatus.NOT_FOUND.value()),
                         HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(vetCard1, HttpStatus.OK);
+            return new ResponseEntity<>(vetCardService.updateVetCard(vetCard), HttpStatus.OK);
         }
 
         @DeleteMapping("/{id}")
@@ -87,7 +87,7 @@ public class VetCardController {
                         new ApplicationError("VetCard is not deleted", HttpStatus.NOT_FOUND.value()),
                         HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<>(vetCard, HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.OK);
         }
 
 

@@ -1,4 +1,4 @@
-package domain;
+package com.vetClinic.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,6 +9,7 @@ import lombok.Data;
 public class Owners {
 
     @Id
+    @Column(name = "owner_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_id_owners")
     @SequenceGenerator(name = "seq_id_owners", sequenceName = "owners_owner_id_seq", allocationSize = 1)
     private Integer id;
@@ -20,9 +21,9 @@ public class Owners {
     private String surname;
 
     @Column(name ="email")
-    private String eMail;
+    private String email;
 
-    @Column(name ="telephoneNumber")
+    @Column(name ="tel_number")
     private String telephoneNumber;
 
     @Column(name ="login")

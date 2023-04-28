@@ -1,9 +1,9 @@
-package service;
+package com.vetClinic.service;
 
-import domain.Owners;
+import com.vetClinic.domain.Owners;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.OwnersRepository;
+import com.vetClinic.repository.OwnersRepository;
 
 import java.util.ArrayList;
 
@@ -35,5 +35,10 @@ public class OwnersService {
 
     public void deletedOwners(int id){
         ownersRepository.deleteById(id);
+    }
+
+    public void recodingConsultation(int id){
+
+
     }
 }

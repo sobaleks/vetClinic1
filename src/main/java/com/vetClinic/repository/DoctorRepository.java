@@ -1,11 +1,11 @@
-package repository;
+package com.vetClinic.repository;
 
-import domain.Doctor;
+import com.vetClinic.domain.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
-
 
 }

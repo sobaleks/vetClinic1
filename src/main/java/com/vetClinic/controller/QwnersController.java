@@ -1,22 +1,20 @@
-package controller;
+package com.vetClinic.controller;
 
-import domain.Doctor;
-import domain.Owners;
+import com.vetClinic.domain.Owners;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import service.OwnersService;
-import utils.ApplicationError;
+import com.vetClinic.service.OwnersService;
+import com.vetClinic.utils.ApplicationError;
 
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping("/owners")
+@RequestMapping("/owner")
 public class QwnersController {
 
     OwnersService ownersService;
@@ -76,7 +74,7 @@ public class QwnersController {
                     new ApplicationError("Owner not updated", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(owner, HttpStatus.OK);
+        return new ResponseEntity<>(ownersService.updateOwners(owners), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -88,7 +86,7 @@ public class QwnersController {
                     new ApplicationError("Owner not deleted", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(owners, HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

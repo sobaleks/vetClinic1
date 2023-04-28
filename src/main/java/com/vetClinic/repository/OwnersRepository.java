@@ -1,6 +1,6 @@
-package repository;
+package com.vetClinic.repository;
 
-import domain.Owners;
+import com.vetClinic.domain.Owners;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,4 +1,4 @@
-package domain;
+package com.vetClinic.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,6 +9,7 @@ import lombok.Data;
 public class Doctor {
 
     @Id
+    @Column(name = "doctor_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_id_doctor")
     @SequenceGenerator(name = "seq_id_doctor", sequenceName = "doctor_doctor_id_seq", allocationSize = 1)
     private Integer id;
@@ -22,12 +23,12 @@ public class Doctor {
     @Column(name= "specialization")
     private String specialization;
 
-    @Column(name= "tel_numbet")
+    @Column(name= "tel_number")
     private String telephoneNumber;
 
-    @Column(name= "doc_ login")
+    @Column(name= "doc_login")
     private String login;
 
-    @Column(name= "doc_password")
+    @Column(name= "doc_pas")
     private String password;
 }

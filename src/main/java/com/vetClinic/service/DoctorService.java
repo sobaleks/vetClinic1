@@ -1,20 +1,30 @@
-package service;
+package com.vetClinic.service;
 
-import domain.Doctor;
+import com.vetClinic.domain.Doctor;
+import com.vetClinic.repository.PetRepository;
+import com.vetClinic.repository.VetCardRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.DoctorRepository;
+import com.vetClinic.repository.DoctorRepository;
 import java.util.ArrayList;
-//hghghghg
+
 @Service
 public class DoctorService {
 
     DoctorRepository doctorRepository;
 
+    PetRepository petRepository;
+
+    VetCardRepository vetCardRepository;
+
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository) {
+    public DoctorService(DoctorRepository doctorRepository, PetRepository petRepository) {
         this.doctorRepository = doctorRepository;
+        this.petRepository = petRepository;
+        this.vetCardRepository = vetCardRepository;
     }
+
 
     public Doctor getDoctorById(int id){
 
@@ -37,5 +47,8 @@ public class DoctorService {
         doctorRepository.deleteById(id);
     }
 
-
+    @Transactional
+    public void change(int id, String changeStatus){
+        petRepository.change(id, changeStatus);
+    }
 }

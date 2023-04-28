@@ -1,8 +1,9 @@
-package service;
+package com.vetClinic.service;
 
-import domain.VetCard;
+import com.vetClinic.domain.VetCard;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.VetCardRepository;
+import com.vetClinic.repository.VetCardRepository;
 
 import java.util.ArrayList;
 
@@ -11,11 +12,12 @@ public class VetCardService {
 
     VetCardRepository vetCardRepository;
 
-    public VetCardService(VetCardRepository vetCardRepository) {
-        this.vetCardRepository = vetCardRepository;
+    @Autowired
+    public VetCardService(VetCardRepository vetCardRepository) {this.vetCardRepository = vetCardRepository;
     }
 
     public VetCard getVetCardById(int id){
+
         return vetCardRepository.findById(id).orElse(null);
     }
 

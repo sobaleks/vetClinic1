@@ -1,4 +1,4 @@
-package domain;
+package com.vetClinic.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -9,6 +9,7 @@ import java.sql.Date;
 @Table(name ="vet_card")
 public class VetCard {
     @Id
+    @Column(name = "card_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_id_vet_card")
     @SequenceGenerator(name = "seq_id_vet_card", sequenceName = "vet_card_card_id_seq", allocationSize = 1)
     private int id;

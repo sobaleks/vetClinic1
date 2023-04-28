@@ -1,4 +1,4 @@
-package utils;
+package com.vetClinic.utils;
 
 import lombok.Data;
 

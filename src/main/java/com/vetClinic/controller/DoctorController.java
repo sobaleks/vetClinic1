@@ -1,6 +1,6 @@
-package controller;
+package com.vetClinic.controller;
 
-import domain.Doctor;
+import com.vetClinic.domain.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,8 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import service.DoctorService;
-import utils.ApplicationError;
+import com.vetClinic.service.DoctorService;
+import com.vetClinic.utils.ApplicationError;
 
 import java.util.ArrayList;
 
@@ -75,7 +75,7 @@ public class DoctorController {
                     new ApplicationError("Doctor not updated", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(doc, HttpStatus.OK);
+        return new ResponseEntity<>(doctorService.updateDoctor(doctor), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
@@ -87,7 +87,13 @@ public class DoctorController {
                     new ApplicationError("Doctor not deleted", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(doctor, HttpStatus.OK);
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
+
+    @PutMapping("/change/{id}/{changeStatus}")
+    public ResponseEntity<?> change(@PathVariable int id, @PathVariable String changeStatus ) {
+        doctorService.change(id, changeStatus);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
