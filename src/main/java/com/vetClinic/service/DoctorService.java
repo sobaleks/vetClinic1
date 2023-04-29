@@ -1,6 +1,7 @@
 package com.vetClinic.service;
 
 import com.vetClinic.domain.Doctor;
+import com.vetClinic.domain.VetCard;
 import com.vetClinic.repository.PetRepository;
 import com.vetClinic.repository.VetCardRepository;
 import jakarta.transaction.Transactional;
@@ -19,7 +20,7 @@ public class DoctorService {
     VetCardRepository vetCardRepository;
 
     @Autowired
-    public DoctorService(DoctorRepository doctorRepository, PetRepository petRepository) {
+    public DoctorService(DoctorRepository doctorRepository, PetRepository petRepository, VetCardRepository vetCardRepository) {
         this.doctorRepository = doctorRepository;
         this.petRepository = petRepository;
         this.vetCardRepository = vetCardRepository;
@@ -50,5 +51,9 @@ public class DoctorService {
     @Transactional
     public void change(int id, String changeStatus){
         petRepository.change(id, changeStatus);
+    }
+
+    public VetCard createVetCardDoctor(VetCard vetCard){
+        return  vetCardRepository.save(vetCard);
     }
 }

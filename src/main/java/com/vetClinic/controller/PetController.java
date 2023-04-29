@@ -2,6 +2,8 @@ package com.vetClinic.controller;
 
 import com.vetClinic.domain.Pet;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -17,6 +19,7 @@ public class PetController {
 
     PetService petService;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public PetController(PetService petService) {
         this.petService = petService;
     }
@@ -47,7 +50,7 @@ public class PetController {
     public ResponseEntity<?> createDoctor(@RequestBody @Valid Pet pet, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
-                //  logger.warn("We have bindingResult error :" + o );
+                logger.warn("We have bindingResult error :" + o );
             }
         }
         Pet createdPet = petService.createPet(pet);
@@ -63,7 +66,7 @@ public class PetController {
     public ResponseEntity<?> updatePet(@RequestBody @Valid Pet pet, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
-                //  logger.warn("We have bindingResult error :" + o );
+                logger.warn("We have bindingResult error :" + o );
             }
         }
         Pet pet1 = petService.getPetById(pet.getId());

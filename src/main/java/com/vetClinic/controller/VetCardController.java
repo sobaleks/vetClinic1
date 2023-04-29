@@ -2,6 +2,8 @@ package com.vetClinic.controller;
 
 import com.vetClinic.domain.VetCard;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ public class VetCardController {
 
 
         VetCardService vetCardService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
         @Autowired
         public VetCardController(VetCardService vetCardService) {
@@ -50,7 +54,7 @@ public class VetCardController {
         public ResponseEntity<?> createVetCard(@RequestBody @Valid VetCard vetCard, BindingResult bindingResult) {
             if (bindingResult.hasErrors()) {
                 for (ObjectError o : bindingResult.getAllErrors()) {
-                    //  logger.warn("We have bindingResult error :" + o );
+                    logger.warn("We have bindingResult error :" + o );
                 }
             }
             VetCard createdVetCard = vetCardService.createVetCard(vetCard);
@@ -66,7 +70,7 @@ public class VetCardController {
         public ResponseEntity<?> updateVetCard(@RequestBody @Valid VetCard vetCard, BindingResult bindingResult) {
             if (bindingResult.hasErrors()) {
                 for (ObjectError o : bindingResult.getAllErrors()) {
-                    //  logger.warn("We have bindingResult error :" + o );
+                    logger.warn("We have bindingResult error :" + o );
                 }
             }
             VetCard vetCard1 = vetCardService.getVetCardById(vetCard.getId());

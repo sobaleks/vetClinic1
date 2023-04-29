@@ -2,6 +2,8 @@ package com.vetClinic.controller;
 
 import com.vetClinic.domain.Owners;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 public class QwnersController {
 
     OwnersService ownersService;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public QwnersController(OwnersService ownersService) {
@@ -49,7 +53,7 @@ public class QwnersController {
     public ResponseEntity<?> createOwner(@RequestBody @Valid Owners owner, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
-                //  logger.warn("We have bindingResult error :" + o );
+                 logger.warn("We have bindingResult error :" + o );
             }
         }
         Owners createdOwner = ownersService.createdOwner(owner);
@@ -65,7 +69,7 @@ public class QwnersController {
     public ResponseEntity<?> updateOwner(@RequestBody @Valid Owners owners, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
-                //  logger.warn("We have bindingResult error :" + o );
+                 logger.warn("We have bindingResult error :" + o );
             }
         }
         Owners owner = ownersService.getOwnersById(owners.getId());

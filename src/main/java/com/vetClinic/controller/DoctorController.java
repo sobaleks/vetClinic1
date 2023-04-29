@@ -1,7 +1,10 @@
 package com.vetClinic.controller;
 
 import com.vetClinic.domain.Doctor;
+import com.vetClinic.domain.VetCard;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,7 @@ public class DoctorController {
 
     DoctorService doctorService;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     public DoctorController(DoctorService doctorService) {
         this.doctorService = doctorService;
@@ -50,7 +54,7 @@ public class DoctorController {
     public ResponseEntity<?> createDoctor(@RequestBody @Valid Doctor doctor, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
-                //  logger.warn("We have bindingResult error :" + o );
+                logger.warn("We have bindingResult error :" + o );
             }
         }
         Doctor createdDoctor = doctorService.createDoctor(doctor);
@@ -66,7 +70,7 @@ public class DoctorController {
     public ResponseEntity<?> updateDoctor(@RequestBody @Valid Doctor doctor, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
-                //  logger.warn("We have bindingResult error :" + o );
+                logger.warn("We have bindingResult error :" + o );
             }
         }
         Doctor doc = doctorService.getDoctorById(doctor.getId());
@@ -94,6 +98,22 @@ public class DoctorController {
     public ResponseEntity<?> change(@PathVariable int id, @PathVariable String changeStatus ) {
         doctorService.change(id, changeStatus);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/createVK")
+    public ResponseEntity<?> createVetCardDoctor(@RequestBody @Valid VetCard vetCard, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            for (ObjectError o : bindingResult.getAllErrors()) {
+                 logger.warn("We have bindingResult error :" + o );
+            }
+        }
+        VetCard createVetCardDoctor = doctorService.createVetCardDoctor(vetCard);
+        if (createVetCardDoctor == null) {
+            return new ResponseEntity<>(
+                    new ApplicationError("VetCard not created", HttpStatus.NO_CONTENT.value()),
+                    HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(createVetCardDoctor, HttpStatus.OK);
     }
 
 }
