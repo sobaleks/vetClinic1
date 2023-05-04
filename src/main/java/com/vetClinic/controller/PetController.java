@@ -8,9 +8,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
 import com.vetClinic.service.PetService;
 import com.vetClinic.utils.ApplicationError;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import java.util.ArrayList;
 
 @RestController
@@ -26,10 +34,12 @@ public class PetController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPetById(@PathVariable int id) {
+        logger.info("doing /pet method getPetById!");
         Pet pet = petService.getPetById(id);
         if (pet == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Pet with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
+                    new ApplicationError(
+                            "Pet with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(pet, HttpStatus.OK);
@@ -37,6 +47,7 @@ public class PetController {
 
     @GetMapping
     public ResponseEntity<?> getAllPet() {
+        logger.info("doing /pet method getAllPet!");
         ArrayList<Pet> pets = petService.getAllPets();
         if (pets == null) {
             return new ResponseEntity<>(
@@ -47,7 +58,8 @@ public class PetController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createDoctor(@RequestBody @Valid Pet pet, BindingResult bindingResult) {
+    public ResponseEntity<?> createPet(@RequestBody @Valid Pet pet, BindingResult bindingResult) {
+        logger.info("doing /pet method createPet!");
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
                 logger.warn("We have bindingResult error :" + o );
@@ -64,6 +76,7 @@ public class PetController {
 
     @PutMapping
     public ResponseEntity<?> updatePet(@RequestBody @Valid Pet pet, BindingResult bindingResult) {
+        logger.info("doing /pet method updatePet!");
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
                 logger.warn("We have bindingResult error :" + o );
@@ -80,6 +93,7 @@ public class PetController {
 
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deletePet(@PathVariable int id) {
+        logger.info("doing /pet method deletePet!");
         Pet pet = petService.getPetById(id);
         petService.deletePet(id);
         if (petService.getPetById(id) != null) {
@@ -92,6 +106,7 @@ public class PetController {
 
     @GetMapping("/myPets/{id}")
     public ResponseEntity<?> getPetsByIdOwn(@PathVariable int id) {
+        logger.info("doing /pet method getPetsByIdOwn!");
         ArrayList<Pet> pets = petService.getPetsByIdOwn(id);
         if (pets == null) {
             return new ResponseEntity<>(
@@ -103,6 +118,7 @@ public class PetController {
 
     @PutMapping("/recCons/{id}")
     public ResponseEntity<?> recodingConsultation(@PathVariable int id) {
+        logger.info("doing /pet method recodingConsultation!");
         petService.recodingConsultation(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

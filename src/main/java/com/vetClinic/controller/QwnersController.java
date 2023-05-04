@@ -9,9 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
 import com.vetClinic.service.OwnersService;
 import com.vetClinic.utils.ApplicationError;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
@@ -29,6 +36,7 @@ public class QwnersController {
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getOwnerById(@PathVariable int id){
+        logger.info("doing /owner method getOwnerById!");
         Owners owners = ownersService.getOwnersById(id);
         if(owners == null){
             return new ResponseEntity<>(
@@ -40,6 +48,7 @@ public class QwnersController {
 
     @GetMapping
     public ResponseEntity<?> getAllOwner() {
+        logger.info("doing /owner method getAllOwner!");
         ArrayList<Owners> owners = ownersService.getAllOwners();
         if (owners == null) {
             return new ResponseEntity<>(
@@ -51,6 +60,7 @@ public class QwnersController {
 
     @PostMapping
     public ResponseEntity<?> createOwner(@RequestBody @Valid Owners owner, BindingResult bindingResult) {
+        logger.info("doing /owner method getAllOwner!");
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
                  logger.warn("We have bindingResult error :" + o );
@@ -67,6 +77,7 @@ public class QwnersController {
 
     @PutMapping
     public ResponseEntity<?> updateOwner(@RequestBody @Valid Owners owners, BindingResult bindingResult) {
+        logger.info("doing /owner method updateOwner!");
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
                  logger.warn("We have bindingResult error :" + o );
@@ -83,6 +94,7 @@ public class QwnersController {
 
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteOwner(@PathVariable int id) {
+        logger.info("doing /owner method deleteOwner!");
         Owners owners = ownersService.getOwnersById(id);
         ownersService.deletedOwners(id);
         if (ownersService.getOwnersById(id) != null) {

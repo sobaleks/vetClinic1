@@ -4,7 +4,6 @@ import lombok.Data;
 
 @Data
 public class ApplicationError {
-
     private String errorMessage;
     private Integer httpStatus;
 

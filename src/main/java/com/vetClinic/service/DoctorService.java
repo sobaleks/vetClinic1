@@ -1,9 +1,11 @@
 package com.vetClinic.service;
 
+import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.Doctor;
 import com.vetClinic.domain.VetCard;
 import com.vetClinic.repository.PetRepository;
 import com.vetClinic.repository.VetCardRepository;
+import com.vetClinic.utils.DtoMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +14,6 @@ import java.util.ArrayList;
 
 @Service
 public class DoctorService {
-
     DoctorRepository doctorRepository;
 
     PetRepository petRepository;
@@ -25,7 +26,6 @@ public class DoctorService {
         this.petRepository = petRepository;
         this.vetCardRepository = vetCardRepository;
     }
-
 
     public Doctor getDoctorById(int id){
 
@@ -53,7 +53,8 @@ public class DoctorService {
         petRepository.change(id, changeStatus);
     }
 
-    public VetCard createVetCardDoctor(VetCard vetCard){
+    public VetCard createVetCardDoctor(VetCardRequestDTO vetCardRequestDTO){
+        VetCard vetCard = DtoMapper.fromVetCardRequestDtoToVetCard(vetCardRequestDTO);
         return  vetCardRepository.save(vetCard);
     }
 }

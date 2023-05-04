@@ -1,10 +1,11 @@
 package com.vetClinic.service;
 
+import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.VetCard;
+import com.vetClinic.utils.DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.vetClinic.repository.VetCardRepository;
-
 import java.util.ArrayList;
 
 @Service
@@ -25,11 +26,13 @@ public class VetCardService {
         return (ArrayList<VetCard>) vetCardRepository.findAll();
     }
 
-    public VetCard createVetCard(VetCard vetCard){
+    public VetCard createVetCard(VetCardRequestDTO vetCardRequestDTO){
+        VetCard vetCard = DtoMapper.fromVetCardRequestDtoToVetCard(vetCardRequestDTO);
         return vetCardRepository.save(vetCard);
     }
 
-    public VetCard updateVetCard(VetCard vetCard){
+    public VetCard updateVetCard(VetCardRequestDTO vetCardRequestDTO){
+        VetCard vetCard = DtoMapper.fromVetCardRequestDtoToVetCard(vetCardRequestDTO);
         return vetCardRepository.save(vetCard);
     }
 

@@ -4,7 +4,6 @@ import com.vetClinic.domain.Owners;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.vetClinic.repository.OwnersRepository;
-
 import java.util.ArrayList;
 
 @Service

@@ -4,7 +4,6 @@ import com.vetClinic.domain.Pet;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import com.vetClinic.repository.PetRepository;
-
 import java.util.ArrayList;
 
 @Service
@@ -26,7 +25,8 @@ public class PetService {
     }
 
     public Pet createPet(Pet pet){
-        return  petRepository.save(pet);
+       // Pet pet = DtoMapper.
+        return petRepository.save(pet);
     }
 
     public Pet updatePet(Pet pet){

@@ -1,5 +1,6 @@
 package com.vetClinic.controller;
 
+import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.Doctor;
 import com.vetClinic.domain.VetCard;
 import jakarta.validation.Valid;
@@ -10,9 +11,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
 import com.vetClinic.service.DoctorService;
 import com.vetClinic.utils.ApplicationError;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 
@@ -30,10 +38,12 @@ public class DoctorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getDoctorById(@PathVariable int id) {
+        logger.info("doing /doctor method getDoctorById!");
         Doctor doctor = doctorService.getDoctorById(id);
         if (doctor == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Doctor with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
+                    new ApplicationError(
+                            "Doctor with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(doctor, HttpStatus.OK);
@@ -41,17 +51,21 @@ public class DoctorController {
 
     @GetMapping
     public ResponseEntity<?> getAllDoctor() {
+        logger.info("doing /doctor method getAllDoctor!");
         ArrayList<Doctor> doctors = doctorService.getAllDoctors();
         if (doctors == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Doctors not found", HttpStatus.NOT_FOUND.value()),
+                    new ApplicationError(
+                            "Doctors not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> createDoctor(@RequestBody @Valid Doctor doctor, BindingResult bindingResult) {
+    public ResponseEntity<?> createDoctor(
+            @RequestBody @Valid Doctor doctor, BindingResult bindingResult) {
+        logger.info("doing /doctor method createDoctor!");
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
                 logger.warn("We have bindingResult error :" + o );
@@ -67,7 +81,9 @@ public class DoctorController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateDoctor(@RequestBody @Valid Doctor doctor, BindingResult bindingResult) {
+    public ResponseEntity<?> updateDoctor(
+            @RequestBody @Valid Doctor doctor, BindingResult bindingResult){
+        logger.info("doing /doctor method updateDoctor!");
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
                 logger.warn("We have bindingResult error :" + o );
@@ -84,6 +100,7 @@ public class DoctorController {
 
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteDoctor(@PathVariable int id) {
+        logger.info("doing /doctor method deleteDoctor!");
         Doctor doctor = doctorService.getDoctorById(id);
         doctorService.deleteDoctor(id);
         if (doctorService.getDoctorById(id) != null) {
@@ -96,18 +113,21 @@ public class DoctorController {
 
     @PutMapping("/change/{id}/{changeStatus}")
     public ResponseEntity<?> change(@PathVariable int id, @PathVariable String changeStatus ) {
+        logger.info("doing /doctor method change!");
         doctorService.change(id, changeStatus);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping("/createVK")
-    public ResponseEntity<?> createVetCardDoctor(@RequestBody @Valid VetCard vetCard, BindingResult bindingResult) {
+    public ResponseEntity<?> createVetCardDoctor(
+            @RequestBody @Valid VetCardRequestDTO vetCardRequestDTO, BindingResult bindingResult) {
+        logger.info("doing /doctor method createVetCardDoctor!");
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
                  logger.warn("We have bindingResult error :" + o );
             }
         }
-        VetCard createVetCardDoctor = doctorService.createVetCardDoctor(vetCard);
+        VetCard createVetCardDoctor = doctorService.createVetCardDoctor(vetCardRequestDTO);
         if (createVetCardDoctor == null) {
             return new ResponseEntity<>(
                     new ApplicationError("VetCard not created", HttpStatus.NO_CONTENT.value()),
