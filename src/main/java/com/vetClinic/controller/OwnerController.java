@@ -1,6 +1,6 @@
 package com.vetClinic.controller;
 
-import com.vetClinic.domain.Owners;
+import com.vetClinic.domain.Owner;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import com.vetClinic.service.OwnersService;
+import com.vetClinic.service.OwnerService;
 import com.vetClinic.utils.ApplicationError;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,32 +24,32 @@ import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/owner")
-public class QwnersController {
+public class OwnerController {
 
-    OwnersService ownersService;
+    OwnerService ownerService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public QwnersController(OwnersService ownersService) {
-        this.ownersService = ownersService;
+    public OwnerController(OwnerService ownerService) {
+        this.ownerService = ownerService;
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getOwnerById(@PathVariable int id){
         logger.info("doing /owner method getOwnerById!");
-        Owners owners = ownersService.getOwnersById(id);
-        if(owners == null){
+        Owner owner = ownerService.getOwnerById(id);
+        if(owner == null){
             return new ResponseEntity<>(
                     new ApplicationError("Owner with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NO_CONTENT);
         }
-    return new ResponseEntity<>(owners, HttpStatus.OK);
+    return new ResponseEntity<>(owner, HttpStatus.OK);
         }
 
     @GetMapping
     public ResponseEntity<?> getAllOwner() {
         logger.info("doing /owner method getAllOwner!");
-        ArrayList<Owners> owners = ownersService.getAllOwners();
+        ArrayList<Owner> owners = ownerService.getAllOwners();
         if (owners == null) {
             return new ResponseEntity<>(
                     new ApplicationError("Owner not found", HttpStatus.NOT_FOUND.value()),
@@ -59,14 +59,14 @@ public class QwnersController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createOwner(@RequestBody @Valid Owners owner, BindingResult bindingResult) {
+    public ResponseEntity<?> createOwner(@RequestBody @Valid Owner owner, BindingResult bindingResult) {
         logger.info("doing /owner method getAllOwner!");
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
                  logger.warn("We have bindingResult error :" + o );
             }
         }
-        Owners createdOwner = ownersService.createdOwner(owner);
+        Owner createdOwner = ownerService.createdOwner(owner);
         if (createdOwner == null) {
             return new ResponseEntity<>(
                     new ApplicationError("Owner not created", HttpStatus.NO_CONTENT.value()),
@@ -76,28 +76,28 @@ public class QwnersController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateOwner(@RequestBody @Valid Owners owners, BindingResult bindingResult) {
+    public ResponseEntity<?> updateOwner(@RequestBody @Valid Owner owners, BindingResult bindingResult) {
         logger.info("doing /owner method updateOwner!");
         if (bindingResult.hasErrors()) {
             for (ObjectError o : bindingResult.getAllErrors()) {
                  logger.warn("We have bindingResult error :" + o );
             }
         }
-        Owners owner = ownersService.getOwnersById(owners.getId());
+        Owner owner = ownerService.getOwnerById(owners.getId());
         if (owners == owner) {
             return new ResponseEntity<>(
                     new ApplicationError("Owner not updated", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(ownersService.updateOwners(owners), HttpStatus.OK);
+        return new ResponseEntity<>(ownerService.updateOwner(owners), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteOwner(@PathVariable int id) {
         logger.info("doing /owner method deleteOwner!");
-        Owners owners = ownersService.getOwnersById(id);
-        ownersService.deletedOwners(id);
-        if (ownersService.getOwnersById(id) != null) {
+        Owner owners = ownerService.getOwnerById(id);
+        ownerService.deletedOwner(id);
+        if (ownerService.getOwnerById(id) != null) {
             return new ResponseEntity<>(
                     new ApplicationError("Owner not deleted", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);

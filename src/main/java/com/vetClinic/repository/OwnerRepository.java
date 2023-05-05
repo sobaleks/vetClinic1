@@ -1,9 +1,9 @@
 package com.vetClinic.repository;
 
-import com.vetClinic.domain.Owners;
+import com.vetClinic.domain.Owner;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface OwnersRepository extends JpaRepository<Owners, Integer> {
+public interface OwnerRepository extends JpaRepository<Owner, Integer> {
 }
