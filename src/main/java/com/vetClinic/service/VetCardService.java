@@ -19,7 +19,7 @@ public class VetCardService {
 
     public VetCard getVetCardById(int id){
 
-        return vetCardRepository.findById(id).orElse(null);
+        return vetCardRepository.findById(id).orElseThrow();
     }
 
     public ArrayList<VetCard> getAllVetCard(){

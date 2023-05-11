@@ -1,6 +1,9 @@
 package com.vetClinic.controller;
 
+import com.vetClinic.domain.DTO.PetRequestDTO;
 import com.vetClinic.domain.Owner;
+import com.vetClinic.domain.Pet;
+import com.vetClinic.exeptions.AppError;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +43,7 @@ public class OwnerController {
         Owner owner = ownerService.getOwnerById(id);
         if(owner == null){
             return new ResponseEntity<>(
-                    new ApplicationError("Owner with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
+                    new AppError("Owner with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NO_CONTENT);
         }
     return new ResponseEntity<>(owner, HttpStatus.OK);
@@ -52,7 +55,7 @@ public class OwnerController {
         ArrayList<Owner> owners = ownerService.getAllOwners();
         if (owners == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Owner not found", HttpStatus.NOT_FOUND.value()),
+                    new AppError("Owner not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(owners, HttpStatus.OK);
@@ -61,15 +64,15 @@ public class OwnerController {
     @PostMapping
     public ResponseEntity<?> createOwner(@RequestBody @Valid Owner owner, BindingResult bindingResult) {
         logger.info("doing /owner method getAllOwner!");
-        if (bindingResult.hasErrors()) {
-            for (ObjectError o : bindingResult.getAllErrors()) {
-                 logger.warn("We have bindingResult error :" + o );
-            }
-        }
+       // if (bindingResult.hasErrors()) {
+       //     for (ObjectError o : bindingResult.getAllErrors()) {
+       //          logger.warn("We have bindingResult error :" + o );
+       //     }
+       // }
         Owner createdOwner = ownerService.createdOwner(owner);
         if (createdOwner == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Owner not created", HttpStatus.NO_CONTENT.value()),
+                    new AppError("Owner not created", HttpStatus.NO_CONTENT.value()),
                     HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(createdOwner, HttpStatus.OK);
@@ -78,15 +81,10 @@ public class OwnerController {
     @PutMapping
     public ResponseEntity<?> updateOwner(@RequestBody @Valid Owner owners, BindingResult bindingResult) {
         logger.info("doing /owner method updateOwner!");
-        if (bindingResult.hasErrors()) {
-            for (ObjectError o : bindingResult.getAllErrors()) {
-                 logger.warn("We have bindingResult error :" + o );
-            }
-        }
         Owner owner = ownerService.getOwnerById(owners.getId());
         if (owners == owner) {
             return new ResponseEntity<>(
-                    new ApplicationError("Owner not updated", HttpStatus.NOT_FOUND.value()),
+                    new AppError("Owner not updated", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(ownerService.updateOwner(owners), HttpStatus.OK);
@@ -95,14 +93,31 @@ public class OwnerController {
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteOwner(@PathVariable int id) {
         logger.info("doing /owner method deleteOwner!");
-        Owner owners = ownerService.getOwnerById(id);
-        ownerService.deletedOwner(id);
-        if (ownerService.getOwnerById(id) != null) {
+
+        if (ownerService.getOwnerById(id) == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Owner not deleted", HttpStatus.NOT_FOUND.value()),
+                    new AppError("Pet with id = " + id + " not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
+        ownerService.deletedOwner(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/myPets/{idOwn}")
+    public ResponseEntity<?> getPetsByIdOwn(@PathVariable int idOwn){
+        logger.info("doing /owner/myPets/ method getPetsByIdOwn!");
+        if (ownerService.getOwnerById(idOwn) == null) {
+            logger.warn("Owner with id = "+ idOwn +" not found");
+            return new ResponseEntity<>(new AppError("owner with id = " + idOwn + " not found",
+                    HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+        }
+        ArrayList<Pet> pets = ownerService.getPetsByIdOwn(idOwn);
+        if (pets.isEmpty()){
+            return new ResponseEntity<>(
+                    new AppError("No pets for this owner", HttpStatus.NOT_FOUND.value()),
+                    HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
 }

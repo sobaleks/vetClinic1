@@ -1,6 +1,8 @@
 package com.vetClinic.controller;
 
+import com.vetClinic.domain.DTO.PetRequestDTO;
 import com.vetClinic.domain.Pet;
+import com.vetClinic.exeptions.AppError;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,9 +40,8 @@ public class PetController {
         Pet pet = petService.getPetById(id);
         if (pet == null) {
             return new ResponseEntity<>(
-                    new ApplicationError(
-                            "Pet with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
-                    HttpStatus.NO_CONTENT);
+                    new AppError("Pet with id = " + id + " not found", HttpStatus.NOT_FOUND.value()),
+                    HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(pet, HttpStatus.OK);
     }
@@ -51,74 +52,54 @@ public class PetController {
         ArrayList<Pet> pets = petService.getAllPets();
         if (pets == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Pets not found", HttpStatus.NOT_FOUND.value()),
+                    new AppError("Pets not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<?> createPet(@RequestBody @Valid Pet pet, BindingResult bindingResult) {
+    public ResponseEntity<?> createPet(@RequestBody @Valid PetRequestDTO petRequestDTO) {
         logger.info("doing /pet method createPet!");
-        if (bindingResult.hasErrors()) {
-            for (ObjectError o : bindingResult.getAllErrors()) {
-                logger.warn("We have bindingResult error :" + o );
-            }
+        if (petService.createPet(petRequestDTO)==null) {
+            return new ResponseEntity<>(new AppError("Pet was not created",
+                    HttpStatus.NO_CONTENT.value()), HttpStatus.NO_CONTENT);
         }
-        Pet createdPet = petService.createPet(pet);
-        if (createdPet == null) {
-            return new ResponseEntity<>(
-                    new ApplicationError("Pet not created", HttpStatus.NO_CONTENT.value()),
-                    HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(createdPet, HttpStatus.OK);
+        return new ResponseEntity<>(petRequestDTO, HttpStatus.CREATED);
     }
 
     @PutMapping
-    public ResponseEntity<?> updatePet(@RequestBody @Valid Pet pet, BindingResult bindingResult) {
+    public ResponseEntity<?> updatePet(@RequestBody @Valid PetRequestDTO petRequestDTO) {  //TODO @PathVariable
         logger.info("doing /pet method updatePet!");
-        if (bindingResult.hasErrors()) {
-            for (ObjectError o : bindingResult.getAllErrors()) {
-                logger.warn("We have bindingResult error :" + o );
-            }
-        }
-        Pet pet1 = petService.getPetById(pet.getId());
-        if (pet == pet1) {
+        if (petService.getPetById(petRequestDTO.getId())==null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Pet not updated", HttpStatus.NOT_FOUND.value()),
+                    new AppError("Pet with id = " + petRequestDTO.getId() + " not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(petService.updatePet(pet), HttpStatus.OK);
+            }
+        petService.updatePet(petRequestDTO);
+        return new ResponseEntity<>(petService.updatePet(petRequestDTO), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deletePet(@PathVariable int id) {
         logger.info("doing /pet method deletePet!");
-        Pet pet = petService.getPetById(id);
+        if (petService.getPetById(id) == null) {
+            return new ResponseEntity<>(
+                    new AppError("Pet with id = " + id + " not found", HttpStatus.NOT_FOUND.value()),
+                    HttpStatus.NOT_FOUND);
+        }
         petService.deletePet(id);
-        if (petService.getPetById(id) != null) {
-            return new ResponseEntity<>(
-                    new ApplicationError("Pet not deleted", HttpStatus.NOT_FOUND.value()),
-                    HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @GetMapping("/myPets/{id}")
-    public ResponseEntity<?> getPetsByIdOwn(@PathVariable int id) {
-        logger.info("doing /pet method getPetsByIdOwn!");
-        ArrayList<Pet> pets = petService.getPetsByIdOwn(id);
-        if (pets == null) {
-            return new ResponseEntity<>(
-                    new ApplicationError("Pets not found", HttpStatus.NOT_FOUND.value()),
-                    HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(pets, HttpStatus.OK);
     }
 
     @PutMapping("/recCons/{id}")
     public ResponseEntity<?> recodingConsultation(@PathVariable int id) {
-        logger.info("doing /pet method recodingConsultation!");
+        logger.info("doing /pet/recCons/ method recodingConsultation!");
+        if(petService.getPetById(id)==null){
+            return new ResponseEntity<>(
+                    new AppError("Consultation not recoding", HttpStatus.NOT_FOUND.value()),
+                    HttpStatus.NOT_FOUND);
+        }
         petService.recodingConsultation(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -2,6 +2,7 @@ package com.vetClinic.controller;
 
 import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.VetCard;
+import com.vetClinic.exeptions.AppError;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +42,7 @@ public class VetCardController {
             VetCard vetCard = vetCardService.getVetCardById(id);
             if (vetCard == null) {
                 return new ResponseEntity<>(
-                        new ApplicationError(
+                        new AppError(
                                 "VetCard with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
                         HttpStatus.NO_CONTENT);
             }
@@ -54,7 +55,7 @@ public class VetCardController {
             ArrayList<VetCard> vetCards = vetCardService.getAllVetCard();
             if (vetCards == null) {
                 return new ResponseEntity<>(
-                        new ApplicationError(
+                        new AppError(
                                 "VetCards not found", HttpStatus.NOT_FOUND.value()),
                         HttpStatus.NOT_FOUND);
             }
@@ -65,15 +66,10 @@ public class VetCardController {
         public ResponseEntity<?> createVetCard(
                 @RequestBody @Valid VetCardRequestDTO vetCardRequestDTO, BindingResult bindingResult) {
             logger.info("doing /vetCard method createVetCard!");
-            if (bindingResult.hasErrors()) {
-                for (ObjectError o : bindingResult.getAllErrors()) {
-                    logger.warn("We have bindingResult error :" + o );
-                }
-            }
             VetCard createdVetCard = vetCardService.createVetCard(vetCardRequestDTO);
             if (createdVetCard == null) {
                 return new ResponseEntity<>(
-                        new ApplicationError(
+                        new AppError(
                                 "VetCard not created", HttpStatus.NO_CONTENT.value()),
                         HttpStatus.NO_CONTENT);
             }
@@ -84,32 +80,25 @@ public class VetCardController {
         public ResponseEntity<?> updateVetCard(
                 @RequestBody @Valid VetCardRequestDTO vetCardRequestDTO, BindingResult bindingResult) {
             logger.info("doing /vetCard method updateVetCard!");
-            if (bindingResult.hasErrors()) {
-                for (ObjectError o : bindingResult.getAllErrors()) {
-                    logger.warn("We have bindingResult error :" + o );
-                }
-            }
-//            VetCard vetCard1 = new VetCard();
-//            vetCard1 = vetCardService.getVetCardById(vetCardRequestDTO.getId());
-//            if (vetCard1 == vetCardService.updateVetCard(vetCardRequestDTO)) {
-//                return new ResponseEntity<>(
-//                        new ApplicationError("VetCard not updated", HttpStatus.NOT_FOUND.value()),
-//                        HttpStatus.NOT_FOUND);
-//            }
+            VetCard vetCard = vetCardService.getVetCardById(vetCardRequestDTO.getId());
+          if ( vetCardService.updateVetCard(vetCardRequestDTO) == null) {
+              return new ResponseEntity<>(
+                      new AppError("VetCard not updated", HttpStatus.NOT_FOUND.value()),
+                      HttpStatus.NOT_FOUND);
+          }
             return new ResponseEntity<>(vetCardService.updateVetCard(vetCardRequestDTO), HttpStatus.OK);
         }
 
         @DeleteMapping("/{id}")
         private ResponseEntity<?> deleteVetCard(@PathVariable int id) {
             logger.info("doing /vetCard method deleteVetCard!");
-            //VetCard vetCard = vetCardService.getVetCardById(id);
-            vetCardService.deleteVetCard(id);
-            if (vetCardService.getVetCardById(id) != null) {
+            if (vetCardService.getVetCardById(id) == null) {
                 return new ResponseEntity<>(
-                        new ApplicationError(
-                                "VetCard is not deleted", HttpStatus.NOT_FOUND.value()),
+                        new AppError(
+                                "VetCard with id = " + id + " not found", HttpStatus.NOT_FOUND.value()),
                         HttpStatus.NOT_FOUND);
             }
+
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

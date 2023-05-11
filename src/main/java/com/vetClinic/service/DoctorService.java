@@ -29,7 +29,7 @@ public class DoctorService {
 
     public Doctor getDoctorById(int id){
 
-        return doctorRepository.findById(id).orElse(null);
+        return doctorRepository.findById(id).orElseThrow();
     }
 
     public ArrayList<Doctor> getAllDoctors(){
@@ -49,8 +49,8 @@ public class DoctorService {
     }
 
     @Transactional
-    public void change(int id, String changeStatus){
-        petRepository.change(id, changeStatus);
+    public void changeStatus(int id, String changeStatus){
+        petRepository.changeStatus(id, changeStatus);
     }
 
     public VetCard createVetCardDoctor(VetCardRequestDTO vetCardRequestDTO){

@@ -3,6 +3,7 @@ package com.vetClinic.controller;
 import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.Doctor;
 import com.vetClinic.domain.VetCard;
+import com.vetClinic.exeptions.AppError;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,9 +43,8 @@ public class DoctorController {
         Doctor doctor = doctorService.getDoctorById(id);
         if (doctor == null) {
             return new ResponseEntity<>(
-                    new ApplicationError(
-                            "Doctor with id " + id + "not found", HttpStatus.NOT_FOUND.value()),
-                    HttpStatus.NO_CONTENT);
+                    new AppError("Doctor with id = " + id + " not found", HttpStatus.NOT_FOUND.value()),
+                    HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(doctor, HttpStatus.OK);
     }
@@ -55,7 +55,7 @@ public class DoctorController {
         ArrayList<Doctor> doctors = doctorService.getAllDoctors();
         if (doctors == null) {
             return new ResponseEntity<>(
-                    new ApplicationError(
+                    new AppError(
                             "Doctors not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
@@ -66,15 +66,10 @@ public class DoctorController {
     public ResponseEntity<?> createDoctor(
             @RequestBody @Valid Doctor doctor, BindingResult bindingResult) {
         logger.info("doing /doctor method createDoctor!");
-        if (bindingResult.hasErrors()) {
-            for (ObjectError o : bindingResult.getAllErrors()) {
-                logger.warn("We have bindingResult error :" + o );
-            }
-        }
         Doctor createdDoctor = doctorService.createDoctor(doctor);
         if (createdDoctor == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Doctor not created", HttpStatus.NO_CONTENT.value()),
+                    new AppError("Doctor not created", HttpStatus.NO_CONTENT.value()),
                     HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(createdDoctor, HttpStatus.OK);
@@ -84,11 +79,6 @@ public class DoctorController {
     public ResponseEntity<?> updateDoctor(
             @RequestBody @Valid Doctor doctor, BindingResult bindingResult){
         logger.info("doing /doctor method updateDoctor!");
-        if (bindingResult.hasErrors()) {
-            for (ObjectError o : bindingResult.getAllErrors()) {
-                logger.warn("We have bindingResult error :" + o );
-            }
-        }
         Doctor doc = doctorService.getDoctorById(doctor.getId());
         if (doctor == doc) {
             return new ResponseEntity<>(
@@ -101,20 +91,19 @@ public class DoctorController {
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteDoctor(@PathVariable int id) {
         logger.info("doing /doctor method deleteDoctor!");
-        Doctor doctor = doctorService.getDoctorById(id);
-        doctorService.deleteDoctor(id);
-        if (doctorService.getDoctorById(id) != null) {
+        if (doctorService.getDoctorById(id) == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("Doctor not deleted", HttpStatus.NOT_FOUND.value()),
+                    new AppError("Doctor with id = " + id + " not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
+        doctorService.deleteDoctor(id);
         return new ResponseEntity<>( HttpStatus.OK);
     }
 
     @PutMapping("/change/{id}/{changeStatus}")
-    public ResponseEntity<?> change(@PathVariable int id, @PathVariable String changeStatus ) {
+    public ResponseEntity<?> changeStatus(@PathVariable int id, @PathVariable String changeStatus ) {
         logger.info("doing /doctor method change!");
-        doctorService.change(id, changeStatus);
+        doctorService.changeStatus(id, changeStatus);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -122,15 +111,10 @@ public class DoctorController {
     public ResponseEntity<?> createVetCardDoctor(
             @RequestBody @Valid VetCardRequestDTO vetCardRequestDTO, BindingResult bindingResult) {
         logger.info("doing /doctor method createVetCardDoctor!");
-        if (bindingResult.hasErrors()) {
-            for (ObjectError o : bindingResult.getAllErrors()) {
-                 logger.warn("We have bindingResult error :" + o );
-            }
-        }
         VetCard createVetCardDoctor = doctorService.createVetCardDoctor(vetCardRequestDTO);
         if (createVetCardDoctor == null) {
             return new ResponseEntity<>(
-                    new ApplicationError("VetCard not created", HttpStatus.NO_CONTENT.value()),
+                    new AppError("VetCard not created", HttpStatus.NO_CONTENT.value()),
                     HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(createVetCardDoctor, HttpStatus.OK);

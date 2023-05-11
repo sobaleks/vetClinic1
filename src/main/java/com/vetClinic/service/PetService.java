@@ -1,6 +1,10 @@
 package com.vetClinic.service;
 
+import com.vetClinic.domain.DTO.PetRequestDTO;
+import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.Pet;
+import com.vetClinic.domain.VetCard;
+import com.vetClinic.utils.DtoMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import com.vetClinic.repository.PetRepository;
@@ -16,20 +20,20 @@ public class PetService {
     }
 
     public Pet getPetById(int id){
-
-        return petRepository.findById(id).orElse(null);
+        return petRepository.findById(id).orElseThrow();
     }
 
     public ArrayList<Pet> getAllPets(){
         return (ArrayList<Pet>) petRepository.findAll();
     }
 
-    public Pet createPet(Pet pet){
-       // Pet pet = DtoMapper.
+    public Pet createPet(PetRequestDTO petRequestDTO){
+        Pet pet = DtoMapper.fromPetRequestDtoToPet(petRequestDTO);
         return petRepository.save(pet);
     }
 
-    public Pet updatePet(Pet pet){
+    public Pet updatePet(PetRequestDTO petRequestDTO){
+        Pet pet = DtoMapper.fromPetRequestDtoToPet(petRequestDTO);
         return petRepository.save(pet);
     }
 
@@ -37,14 +41,13 @@ public class PetService {
         petRepository.deleteById(id);
     }
 
-    public ArrayList<Pet> getPetsByIdOwn(int idOwn){
-        return  petRepository.getPetsByIdOwn(idOwn);
-    }
 
     @Transactional
     public void recodingConsultation(int id){
          petRepository.recodingConsultation(id);
     }
+
+
 
 
 }
