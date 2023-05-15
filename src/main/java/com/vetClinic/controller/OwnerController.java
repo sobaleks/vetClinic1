@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/owner")
@@ -64,18 +65,13 @@ public class OwnerController {
     @PostMapping
     public ResponseEntity<?> createOwner(@RequestBody @Valid Owner owner, BindingResult bindingResult) {
         logger.info("doing /owner method getAllOwner!");
-       // if (bindingResult.hasErrors()) {
-       //     for (ObjectError o : bindingResult.getAllErrors()) {
-       //          logger.warn("We have bindingResult error :" + o );
-       //     }
-       // }
-        Owner createdOwner = ownerService.createdOwner(owner);
-        if (createdOwner == null) {
+        Owner createOwner = ownerService.createOwner(owner);
+        if (createOwner == null) {
             return new ResponseEntity<>(
-                    new AppError("Owner not created", HttpStatus.NO_CONTENT.value()),
+                    new AppError("Owner with this loin exist ", HttpStatus.NO_CONTENT.value()),
                     HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(createdOwner, HttpStatus.OK);
+        return new ResponseEntity<>(createOwner, HttpStatus.OK);
     }
 
     @PutMapping
@@ -99,7 +95,7 @@ public class OwnerController {
                     new AppError("Pet with id = " + id + " not found", HttpStatus.NOT_FOUND.value()),
                     HttpStatus.NOT_FOUND);
         }
-        ownerService.deletedOwner(id);
+        ownerService.deleteOwner(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -118,6 +114,12 @@ public class OwnerController {
                     HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(pets, HttpStatus.OK);
+    }
+
+    @GetMapping("/ln/{ln}")
+    public ResponseEntity<Owner> findOwnerByLastName(@PathVariable String ln) {
+        Optional<Owner> owner = ownerService.findOwnerByLastName(ln);
+        return owner.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.CONFLICT));
     }
 
 }

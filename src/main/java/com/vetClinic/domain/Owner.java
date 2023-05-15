@@ -52,4 +52,7 @@ public class Owner {
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private Set<Pet> petsList = new HashSet<>();
 
+    @Column(name = "role")
+    private String role;
+
 }

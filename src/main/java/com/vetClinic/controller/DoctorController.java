@@ -97,7 +97,7 @@ public class DoctorController {
                     HttpStatus.NOT_FOUND);
         }
         doctorService.deleteDoctor(id);
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>( id,HttpStatus.OK);
     }
 
     @PutMapping("/change/{id}/{changeStatus}")
@@ -110,7 +110,7 @@ public class DoctorController {
     @PostMapping("/createVK")
     public ResponseEntity<?> createVetCardDoctor(
             @RequestBody @Valid VetCardRequestDTO vetCardRequestDTO, BindingResult bindingResult) {
-        logger.info("doing /doctor method createVetCardDoctor!");
+        // logger.info("doing /doctor method createVetCardDoctor!");
         VetCard createVetCardDoctor = doctorService.createVetCardDoctor(vetCardRequestDTO);
         if (createVetCardDoctor == null) {
             return new ResponseEntity<>(

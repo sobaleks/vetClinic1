@@ -36,7 +36,7 @@ public class PetController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getPetById(@PathVariable int id) {
-        logger.info("doing /pet method getPetById!");
+       // logger.info("doing /pet method getPetById!");
         Pet pet = petService.getPetById(id);
         if (pet == null) {
             return new ResponseEntity<>(

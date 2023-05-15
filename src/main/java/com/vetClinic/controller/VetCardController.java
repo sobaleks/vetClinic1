@@ -98,7 +98,7 @@ public class VetCardController {
                                 "VetCard with id = " + id + " not found", HttpStatus.NOT_FOUND.value()),
                         HttpStatus.NOT_FOUND);
             }
-
+            vetCardService.deleteVetCard(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
 

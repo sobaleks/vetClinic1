@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Data;
+import net.minidev.json.annotate.JsonIgnore;
 
 @Data
 @Entity
@@ -37,4 +38,7 @@ public class Doctor {
 
     @Column(name= "doc_pas")
     private String password;
+
+    @Column(name = "role")
+    private String role;
 }
