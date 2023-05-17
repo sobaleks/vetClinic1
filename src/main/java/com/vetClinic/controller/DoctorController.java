@@ -74,7 +74,7 @@ public class DoctorController {
 
     @PutMapping("/change/{id}/{changeStatus}")
     public ResponseEntity<?> changeStatus(@PathVariable int id, @PathVariable String changeStatus) {
-        logger.info("doing /doctor method change!");
+        logger.info("doing /doctor method change status");
         doctorService.changeStatus(id, changeStatus);
         return new ResponseEntity<>(HttpStatus.OK);
     }

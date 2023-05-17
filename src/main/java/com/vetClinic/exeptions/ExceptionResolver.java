@@ -19,43 +19,43 @@ public class ExceptionResolver {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @ExceptionHandler(DataAccessException.class)
-    public ResponseEntity<AppError> dataAccessHandler(DataAccessException e) {
+    public ResponseEntity<ApplicationError> dataAccessHandler(DataAccessException e) {
         logger.warn("Ошибка при заполнении формы: "+ e.getMostSpecificCause());
-        return new ResponseEntity<>(new AppError("Неверно заполнена форма, " + e.getMostSpecificCause().getLocalizedMessage(),
+        return new ResponseEntity<>(new ApplicationError("Form filled out incorrectly, " + e.getMostSpecificCause().getLocalizedMessage(),
                 HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> validationHandler(ConstraintViolationException e){
-        logger.warn("Ошибка валидации: " + e.getConstraintViolations());
-        StringBuilder errorMessage = new StringBuilder("Ошибка заполнения данных: \n");
+        logger.warn("Validation error: " + e.getConstraintViolations());
+        StringBuilder errorMessage = new StringBuilder("Data filling error: \n");
         Set<ConstraintViolation<?>> hashSet = e.getConstraintViolations();
         for (ConstraintViolation c:hashSet) {
             errorMessage.append("Ошибка в поле ").append(c.getPropertyPath());
             errorMessage.append(", ").append(c.getMessage()).append(".\n");
         }
-        return new ResponseEntity<>(new AppError(errorMessage.toString(),
+        return new ResponseEntity<>(new ApplicationError(errorMessage.toString(),
                 HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<?> nullPointerHandler(NoSuchElementException e){
-        logger.warn("Передано значение null: " + e.fillInStackTrace());
-        return new ResponseEntity<>(new AppError("Искомый объект не найден",
+        logger.warn("Value passed null: " + e.fillInStackTrace());
+        return new ResponseEntity<>(new ApplicationError("The object you were looking for was not found",
                 HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ForbiddenContentException.class)
-    public ResponseEntity<AppError> forbiddenContentHandler(ForbiddenContentException e){
+    public ResponseEntity<ApplicationError> forbiddenContentHandler(ForbiddenContentException e){
         logger.warn("trying to send request for forbidden object" + e.getLocalizedMessage());
-        return new ResponseEntity<>(new AppError("You don't have permission for this request, " +
+        return new ResponseEntity<>(new ApplicationError("You don't have permission for this request, " +
                 e.getLocalizedMessage(), HttpStatus.FORBIDDEN.value()), HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(ObjectNotFoundException.class)
-    public ResponseEntity<AppError> ObjectNotFoundHandler(ObjectNotFoundException e){
+    public ResponseEntity<ApplicationError> ObjectNotFoundHandler(ObjectNotFoundException e){
         logger.warn("the requested object was not found" + e.getLocalizedMessage());
-        return new ResponseEntity<>(new AppError("The requested object was not found, " +
+        return new ResponseEntity<>(new ApplicationError("The requested object was not found, " +
                 e.getLocalizedMessage(), HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
     }
 

@@ -94,7 +94,7 @@ public class DoctorService {
     @Transactional
     public void changeStatus(int id, String changeStatus) {
         petRepository.findById(id).orElseThrow(
-                () -> new ObjectNotFoundException("Pet with id " + id + " not found"));
+                () -> new ObjectNotFoundException("Doctor with id " + id + " not found"));
         userAccess.adminOrDoctorAuthorization();
         petRepository.changeStatus(id, changeStatus);
     }

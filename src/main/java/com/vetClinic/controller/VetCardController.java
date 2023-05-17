@@ -42,7 +42,7 @@ public class VetCardController {
 
     @GetMapping
     public ResponseEntity<?> getAllVetCard() {
-        logger.info("doing /vetCard method getAllVetCard!");
+        logger.info("doing /card method getAllVetCard!");
         ArrayList<VetCard> vetCards = vetCardService.getAllVetCard();
         return new ResponseEntity<>(vetCards, HttpStatus.OK);
     }
@@ -50,7 +50,7 @@ public class VetCardController {
     @PostMapping
     public ResponseEntity<?> createVetCard(
             @RequestBody @Valid VetCardRequestDTO vetCardRequestDTO) {
-        logger.info("doing /vetCard method createVetCard!");
+        logger.info("doing /card method createVetCard!");
         VetCard createVetCard = vetCardService.createVetCard(vetCardRequestDTO);
         return new ResponseEntity<>(createVetCard, HttpStatus.OK);
     }
@@ -58,14 +58,14 @@ public class VetCardController {
     @PutMapping
     public ResponseEntity<?> updateVetCard(
             @RequestBody @Valid VetCardRequestDTO vetCardRequestDTO) {
-        logger.info("doing /vetCard method updateVetCard!");
+        logger.info("doing /card method updateVetCard!");
         VetCard vetCard = vetCardService.updateVetCard(vetCardRequestDTO);
         return new ResponseEntity<>(vetCard, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     private ResponseEntity<?> deleteVetCard(@PathVariable int id) {
-        logger.info("doing /vetCard method deleteVetCard!");
+        logger.info("doing /card method deleteVetCard!");
         vetCardService.deleteVetCard(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

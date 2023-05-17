@@ -5,12 +5,11 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class AppError {
+public class ApplicationError {
     private String errorMessage;
     private int httpStatusCode;
 
-
-    public AppError(String errorMessage, int httpStatusCode) {
+    public ApplicationError(String errorMessage, int httpStatusCode) {
         this.errorMessage = errorMessage;
         this.httpStatusCode = httpStatusCode;
     }
