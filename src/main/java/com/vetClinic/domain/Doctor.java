@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Data;
-import net.minidev.json.annotate.JsonIgnore;
 
 @Data
 @Entity
@@ -21,22 +20,22 @@ public class Doctor {
     @SequenceGenerator(name = "seq_id_doctor", sequenceName = "doctor_doctor_id_seq", allocationSize = 1)
     private Integer id;
 
-    @Column(name= "doc_name")
+    @Column(name = "doc_name")
     private String name;
 
-    @Column(name= "doc_surname")
+    @Column(name = "doc_surname")
     private String surname;
 
-    @Column(name= "specialization")
+    @Column(name = "specialization")
     private String specialization;
 
-    @Column(name= "tel_number")
+    @Column(name = "tel_number")
     private String telephoneNumber;
 
-    @Column(name= "doc_login")
+    @Column(name = "doc_login")
     private String login;
 
-    @Column(name= "doc_pas")
+    @Column(name = "doc_pas")
     private String password;
 
     @Column(name = "role")

@@ -13,10 +13,12 @@ import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
 import java.sql.Date;
+
 @Data
 @Entity
-@Table(name ="vet_card")
+@Table(name = "vet_card")
 @ToString(exclude = {"pet"})
 @EqualsAndHashCode(exclude = {"pet"})
 public class VetCard {

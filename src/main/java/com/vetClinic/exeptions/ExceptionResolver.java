@@ -45,4 +45,18 @@ public class ExceptionResolver {
                 HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ForbiddenContentException.class)
+    public ResponseEntity<AppError> forbiddenContentHandler(ForbiddenContentException e){
+        logger.warn("trying to send request for forbidden object" + e.getLocalizedMessage());
+        return new ResponseEntity<>(new AppError("You don't have permission for this request, " +
+                e.getLocalizedMessage(), HttpStatus.FORBIDDEN.value()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(ObjectNotFoundException.class)
+    public ResponseEntity<AppError> ObjectNotFoundHandler(ObjectNotFoundException e){
+        logger.warn("the requested object was not found" + e.getLocalizedMessage());
+        return new ResponseEntity<>(new AppError("The requested object was not found, " +
+                e.getLocalizedMessage(), HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+    }
+
 }

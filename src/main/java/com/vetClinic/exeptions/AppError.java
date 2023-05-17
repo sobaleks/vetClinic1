@@ -9,8 +9,6 @@ public class AppError {
     private String errorMessage;
     private int httpStatusCode;
 
-    public AppError() {
-    }
 
     public AppError(String errorMessage, int httpStatusCode) {
         this.errorMessage = errorMessage;

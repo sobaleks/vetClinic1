@@ -17,6 +17,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class Pet {
     @Id
     @Column(name = "pet_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_id_pet")
-    @SequenceGenerator(name = "seq_id_pet", sequenceName = "pet_pet_id_seq",allocationSize = 1)
+    @SequenceGenerator(name = "seq_id_pet", sequenceName = "pet_pet_id_seq", allocationSize = 1)
     private Integer id;
 
     @Column(name = "name")

@@ -30,22 +30,22 @@ public class Owner {
     @SequenceGenerator(name = "seq_id_owner", sequenceName = "owner_owner_id_seq", allocationSize = 1)
     private Integer id;
 
-    @Column(name ="name")
+    @Column(name = "name")
     private String name;
 
-    @Column(name ="surname")
+    @Column(name = "surname")
     private String surname;
 
-    @Column(name ="email")
+    @Column(name = "email")
     private String email;
 
-    @Column(name ="tel_number")
+    @Column(name = "tel_number")
     private String telephoneNumber;
 
-    @Column(name ="login")
+    @Column(name = "login")
     private String login;
 
-    @Column(name ="password")
+    @Column(name = "password")
     private String password;
 
     @JsonManagedReference

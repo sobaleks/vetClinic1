@@ -11,8 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static com.vetClinic.utils.ExeptionMessage.OWNER_OR_DOCTOR_EXISTS;
-import static com.vetClinic.utils.ExeptionMessage.USER_NOT_FOUND;
+import static com.vetClinic.utils.ExceptionMessage.USER_NOT_FOUND;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
@@ -46,7 +45,7 @@ public class CustomUserDetailService implements UserDetailsService {
                     .build();
 
             return securityUser;
-        }else
+        } else
             throw new InternalException(USER_NOT_FOUND);
     }
 }
