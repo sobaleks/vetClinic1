@@ -7,17 +7,18 @@ import com.vetClinic.exeptions.ObjectNotFoundException;
 import com.vetClinic.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-@Service
+@Component
 public class UserAccess {
 
     UserAuthorization userAuthorization;
 
     DoctorRepository doctorRepository;
 
+    @Autowired
     public UserAccess(UserAuthorization userAuthorization, DoctorRepository doctorRepository) {
         this.userAuthorization = userAuthorization;
         this.doctorRepository = doctorRepository;

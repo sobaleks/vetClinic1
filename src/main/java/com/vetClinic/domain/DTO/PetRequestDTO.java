@@ -11,7 +11,4 @@ public class PetRequestDTO {
     private int age;
     private String status;
     private int idOwn;
-
-
-
 }

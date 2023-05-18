@@ -10,5 +10,4 @@ public class VetCardRequestDTO {
     private String diagnosis;
     private String recommendations;
     private int idPet;
-
 }

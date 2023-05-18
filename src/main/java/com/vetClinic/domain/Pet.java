@@ -55,5 +55,4 @@ public class Pet {
     @ManyToOne
     @JoinColumn(name = "id_own", nullable = false)
     private Owner owner;
-
 }

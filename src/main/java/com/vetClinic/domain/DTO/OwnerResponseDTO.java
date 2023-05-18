@@ -14,5 +14,4 @@ public class OwnerResponseDTO {
     private String email;
     private String telephoneNumber;
     private Set<Pet> petsList = new HashSet<>();
-
 }

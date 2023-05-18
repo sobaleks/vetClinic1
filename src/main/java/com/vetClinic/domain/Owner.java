@@ -54,5 +54,4 @@ public class Owner {
 
     @Column(name = "role")
     private String role;
-
 }

@@ -1,8 +1,8 @@
 package com.vetClinic.security;
 
-import com.sun.jdi.InternalException;
 import com.vetClinic.domain.Doctor;
 import com.vetClinic.domain.Owner;
+import com.vetClinic.exeptions.ObjectNotFoundException;
 import com.vetClinic.repository.DoctorRepository;
 import com.vetClinic.repository.OwnerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import static com.vetClinic.utils.ExceptionMessage.USER_NOT_FOUND;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
@@ -46,6 +44,6 @@ public class CustomUserDetailService implements UserDetailsService {
 
             return securityUser;
         } else
-            throw new InternalException(USER_NOT_FOUND);
+            throw new ObjectNotFoundException("User not found");
     }
 }

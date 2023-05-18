@@ -36,7 +36,6 @@ Application use PostgreSQL database. For start the application you need Postgres
 * http://localhost:8080/pet/{id} - GET method, info about pet  for users
 * http://localhost:8080/pet - PUT method, change current pet users
 
-
 ## Available endpoints for doctor
 
 * http://localhost:8080/owner/{id} - GET method, info about user
@@ -75,7 +74,7 @@ Application use PostgreSQL database. For start the application you need Postgres
 * http://localhost:8080/pet - POST method, registration pet
 * http://localhost:8080/pet - PUT method, change current pet users
 * http://localhost:8080/pet/{id} - DELETE method, delete pet
-* 
+
 * http://localhost:8080/doctor/{id} - GET method, info about doctor
 * http://localhost:8080/doctor - GET method, info about all doctors doctor/createVK
 * http://localhost:8080/doctor - POST method, create doctor or admin

@@ -1,10 +1,10 @@
 package com.vetClinic.service;
 
-import com.sun.jdi.InternalException;
 import com.vetClinic.authorization.UserAccess;
 import com.vetClinic.domain.DTO.OwnerResponseDTO;
 import com.vetClinic.domain.Owner;
 import com.vetClinic.domain.Pet;
+import com.vetClinic.exeptions.DataAccessException;
 import com.vetClinic.exeptions.ObjectNotFoundException;
 import com.vetClinic.repository.DoctorRepository;
 import com.vetClinic.repository.OwnerRepository;
@@ -16,8 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-
-import static com.vetClinic.utils.ExceptionMessage.OWNER_OR_DOCTOR_EXISTS;
 
 @Service
 public class OwnerService {
@@ -60,10 +58,8 @@ public class OwnerService {
     }
 
     public Owner createOwner(Owner owner) {
-        if ((doctorRepository.findDoctorByLogin(owner.getLogin()).orElse(null)) != null) {
-            throw new InternalException(OWNER_OR_DOCTOR_EXISTS);
-        }
-
+        doctorRepository.findDoctorByLogin(owner.getLogin()).orElseThrow(
+                ()-> new DataAccessException("User with name " + owner.getLogin() + " already exists "));
         owner.setPassword(passwordEncoder.encode(owner.getPassword()));
         owner.setRole("USER");
         return ownerRepository.save(owner);

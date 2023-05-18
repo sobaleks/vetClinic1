@@ -1,11 +1,11 @@
 package com.vetClinic.service;
 
-import com.sun.jdi.InternalException;
 import com.vetClinic.authorization.UserAccess;
 import com.vetClinic.domain.DTO.DoctorResponseDTO;
 import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.Doctor;
 import com.vetClinic.domain.VetCard;
+import com.vetClinic.exeptions.DataAccessException;
 import com.vetClinic.exeptions.ObjectNotFoundException;
 import com.vetClinic.repository.DoctorRepository;
 import com.vetClinic.repository.OwnerRepository;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-import static com.vetClinic.utils.ExceptionMessage.OWNER_OR_DOCTOR_EXISTS;
 
 @Service
 public class DoctorService {
@@ -67,9 +66,8 @@ public class DoctorService {
     }
 
     public Doctor createDoctor(Doctor doctor) {
-        if ((ownerRepository.findOwnerByLogin(doctor.getLogin()).orElse(null)) != null) {
-            throw new InternalException(OWNER_OR_DOCTOR_EXISTS);
-        }
+        ownerRepository.findOwnerByLogin(doctor.getLogin()).orElseThrow(
+                () -> new DataAccessException("User with name " + doctor.getLogin() + " already exists "));
         doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
         doctor.setRole("DOCTOR");
         userAccess.adminAuthorization();
