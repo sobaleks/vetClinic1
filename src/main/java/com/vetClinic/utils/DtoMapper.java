@@ -41,6 +41,7 @@ public class DtoMapper {
         vetCard.setDiagnosis(vetCardRequestDTO.getDiagnosis());
         vetCard.setRecommendations(vetCardRequestDTO.getRecommendations());
         vetCard.setDate(new Date(System.currentTimeMillis()));
+        vetCard.setVaccination(vetCardRequestDTO.getVaccination());
         vetCard.setPet(petRepository.findById(vetCardRequestDTO.getIdPet()).get());
         return vetCard;
     }

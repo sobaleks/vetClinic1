@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/card")
@@ -68,5 +69,10 @@ public class VetCardController {
         logger.info("doing /card method deleteVetCard!");
         vetCardService.deleteVetCard(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/vaccinations/{petId}")
+    public ResponseEntity<?> getPetVaccinations(@PathVariable int petId) {
+        return vetCardService.getPetVaccinations(petId);
     }
 }

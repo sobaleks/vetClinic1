@@ -7,9 +7,11 @@ import com.vetClinic.exeptions.ObjectNotFoundException;
 import com.vetClinic.repository.VetCardRepository;
 import com.vetClinic.utils.DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class VetCardService {
@@ -58,5 +60,15 @@ public class VetCardService {
                 () -> new ObjectNotFoundException("VetCard with id " + id + " not found"));
         userAccess.adminOrDoctorAuthorization();
         vetCardRepository.deleteById(id);
+    }
+
+    public ResponseEntity<?> getPetVaccinations(int petId) {
+        List<String> vaccinations = vetCardRepository.findVaccinationsByPetId(petId);
+
+        if (vaccinations == null || vaccinations.isEmpty()) {
+            return ResponseEntity.ok("У данного питомца нет прививок");
+        }
+
+        return ResponseEntity.ok(vaccinations);
     }
 }

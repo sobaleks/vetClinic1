@@ -41,4 +41,7 @@ public class VetCard {
 
     @Column(name = "recommendations")
     private String recommendations;
+
+    @Column(name = "vaccination")
+    private String vaccination;
 }

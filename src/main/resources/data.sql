@@ -1,1 +1,0 @@
-INSERT INTO doctor (doctor_id, doc_name, doc_surname, specialization, tel_number, doc_login, doc_pas, role) VALUES (7, 'Nastya', 'Tomchuk', 'teripist', '832942342', 'Tom','Tom', 'ADMIN');
