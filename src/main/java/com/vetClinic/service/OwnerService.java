@@ -58,8 +58,9 @@ public class OwnerService {
     }
 
     public Owner createOwner(Owner owner) {
-        doctorRepository.findDoctorByLogin(owner.getLogin()).orElseThrow(
-                ()-> new DataAccessException("User with name " + owner.getLogin() + " already exists "));
+        if (ownerRepository.findOwnerByLogin(owner.getLogin()).isPresent()) {
+            throw new DataAccessException("User with name " + owner.getLogin() + " already exists");
+        }
         owner.setPassword(passwordEncoder.encode(owner.getPassword()));
         owner.setRole("USER");
         return ownerRepository.save(owner);

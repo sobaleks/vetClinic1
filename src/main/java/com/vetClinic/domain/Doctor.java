@@ -1,13 +1,23 @@
 package com.vetClinic.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -20,11 +30,11 @@ public class Doctor {
     @SequenceGenerator(name = "seq_id_doctor", sequenceName = "doctor_doctor_id_seq", allocationSize = 1)
     private Integer id;
 
-    @Column(name = "doc_name")
+    @Column(name = "full_name")
     private String name;
 
-    @Column(name = "doc_surname")
-    private String surname;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "specialization")
     private String specialization;
@@ -32,12 +42,22 @@ public class Doctor {
     @Column(name = "tel_number")
     private String telephoneNumber;
 
-    @Column(name = "doc_login")
+    @Column(name = "staff_login")
     private String login;
 
-    @Column(name = "doc_pas")
+    @Column(name = "staff_pas")
     private String password;
 
     @Column(name = "role")
     private String role;
+
+    @JsonIgnore
+    @JsonManagedReference
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<DoctorSchedule> schedules = new HashSet<>();
+
+    @JsonIgnore
+    @JsonManagedReference
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    private Set<Appointment> appointments = new HashSet<>();
 }

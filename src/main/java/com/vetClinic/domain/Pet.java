@@ -38,6 +38,9 @@ public class Pet {
     @Pattern(regexp = "[A-z]*")
     private String name;
 
+    @Column(name = "type")
+    private String type;
+
     @Column(name = "breed")
     private String breed;
 
@@ -55,4 +58,8 @@ public class Pet {
     @ManyToOne
     @JoinColumn(name = "id_own", nullable = false)
     private Owner owner;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pet", fetch = FetchType.LAZY)
+    private Set<Appointment> appointments = new HashSet<>();
 }

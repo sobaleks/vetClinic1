@@ -49,6 +49,7 @@ public class DtoMapper {
         Pet pet = new Pet();
         pet.setId(petRequestDTO.getId());
         pet.setName(petRequestDTO.getName());
+        pet.setType(petRequestDTO.getType());
         pet.setBreed(petRequestDTO.getBreed());
         pet.setAge(petRequestDTO.getAge());
         pet.setStatus(petRequestDTO.getStatus());
@@ -69,7 +70,7 @@ public class DtoMapper {
     public static DoctorResponseDTO fromDoctorToDoctorResponseDTO(Doctor doctor) {
         DoctorResponseDTO doctorResponseDTO = new DoctorResponseDTO();
         doctorResponseDTO.setName(doctor.getName());
-        doctorResponseDTO.setSurname(doctor.getSurname());
+        doctorResponseDTO.setEmail(doctor.getEmail());
         doctorResponseDTO.setTelephoneNumber(doctor.getTelephoneNumber());
         doctorResponseDTO.setSpecialization(doctor.getSpecialization());
         return doctorResponseDTO;

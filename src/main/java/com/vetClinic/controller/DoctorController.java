@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/doctor")
@@ -85,6 +87,12 @@ public class DoctorController {
         logger.info("doing /doctor method createVetCardDoctor!");
         VetCard createVetCardDoctor = doctorService.createVetCardDoctor(vetCardRequestDTO);
         return new ResponseEntity<>(createVetCardDoctor, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Doctor>> searchBySpecialization(@RequestParam String specialization) {
+        List<Doctor> doctors = doctorService.getDoctorsBySpecialization(specialization);
+        return ResponseEntity.ok(doctors);
     }
 }
 

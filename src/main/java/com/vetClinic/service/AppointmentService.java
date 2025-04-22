@@ -5,13 +5,17 @@ import com.vetClinic.domain.Appointment;
 import com.vetClinic.exeptions.NoPetAppointmentsException;
 import com.vetClinic.exeptions.ObjectNotFoundException;
 import com.vetClinic.repository.AppointmentRepository;
+import com.vetClinic.repository.DoctorScheduleRepository;
 import com.vetClinic.utils.DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +23,15 @@ import java.util.List;
 public class AppointmentService {
 
     private final AppointmentRepository appointmentRepository;
+    private final DoctorScheduleRepository doctorScheduleRepository;
     private final UserAccess userAccess;
 
     @Autowired
-    public AppointmentService(AppointmentRepository appointmentRepository, UserAccess userAccess) {
+    public AppointmentService(AppointmentRepository appointmentRepository, UserAccess userAccess,
+                              DoctorScheduleRepository doctorScheduleRepository) {
         this.appointmentRepository = appointmentRepository;
         this.userAccess = userAccess;
+        this.doctorScheduleRepository = doctorScheduleRepository;
     }
 
     // Получение записи по ID
@@ -60,6 +67,19 @@ public class AppointmentService {
 
         Appointment appointment = DtoMapper.fromAppointmentRequestDtoToAppointment(dto);
         userAccess.adminOrDoctorAuthorization();
+        DayOfWeek dayOfWeek = dto.getDateTime().getDayOfWeek();
+        LocalDate date = dto.getDateTime().toLocalDate();
+        LocalTime startTime = dto.getDateTime().toLocalTime();
+        LocalTime endTime = startTime.plusMinutes(dto.getDurationMinutes());
+
+        if (!doctorScheduleRepository.isDoctorWorking(
+                dto.getDoctorId(),
+                dayOfWeek.name(),
+                date,
+                startTime,
+                endTime)) {
+            throw new IllegalStateException("Врач не работает в это время");
+        }
         return appointmentRepository.save(appointment);
     }
 
@@ -74,6 +94,19 @@ public class AppointmentService {
             throw new IllegalStateException("Новое время конфликтует с существующей записью");
         }
 
+        DayOfWeek dayOfWeek = dto.getDateTime().getDayOfWeek();
+        LocalDate date = dto.getDateTime().toLocalDate();
+        LocalTime startTime = dto.getDateTime().toLocalTime();
+        LocalTime endTime = startTime.plusMinutes(dto.getDurationMinutes());
+
+        if (!doctorScheduleRepository.isDoctorWorking(
+                dto.getDoctorId(),
+                dayOfWeek.name(),
+                date,
+                startTime,
+                endTime)) {
+            throw new IllegalStateException("Врач не работает в это время");
+        }
         Appointment appointment = DtoMapper.fromAppointmentRequestDtoToAppointment(dto);
         userAccess.adminOrDoctorAuthorization();
         return appointmentRepository.save(appointment);
@@ -148,4 +181,5 @@ public class AppointmentService {
 
         return ResponseEntity.ok(appointments);
     }
+
 }

@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Service
@@ -66,8 +67,9 @@ public class DoctorService {
     }
 
     public Doctor createDoctor(Doctor doctor) {
-        doctorRepository.findDoctorByLogin(doctor.getLogin()).orElseThrow(
-                () -> new DataAccessException("User with name " + doctor.getLogin() + " already exists "));
+        if (doctorRepository.findDoctorByLogin(doctor.getLogin()).isPresent()) {
+            throw new DataAccessException("User with name " + doctor.getLogin() + " already exists");
+        }
         doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
         doctor.setRole("DOCTOR");
         userAccess.adminAuthorization();
@@ -101,5 +103,9 @@ public class DoctorService {
         VetCard vetCard = DtoMapper.fromVetCardRequestDtoToVetCard(vetCardRequestDTO);
         userAccess.adminOrDoctorAuthorization();
         return vetCardRepository.save(vetCard);
+    }
+
+    public List<Doctor> getDoctorsBySpecialization(String specialization) {
+        return doctorRepository.findBySpecialization(specialization);
     }
 }
