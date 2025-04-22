@@ -51,7 +51,7 @@ public class DtoMapper {
         pet.setName(petRequestDTO.getName());
         pet.setType(petRequestDTO.getType());
         pet.setBreed(petRequestDTO.getBreed());
-        pet.setAge(petRequestDTO.getAge());
+        pet.setDateOfBirth(petRequestDTO.getDateOfBirth());
         pet.setStatus(petRequestDTO.getStatus());
         pet.setOwner(ownerRepository.findById(petRequestDTO.getIdOwn()).get());
         return pet;

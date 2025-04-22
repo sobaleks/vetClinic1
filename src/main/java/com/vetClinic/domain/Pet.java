@@ -1,6 +1,7 @@
 package com.vetClinic.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,11 +14,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,7 +47,10 @@ public class Pet {
     @Column(name = "breed")
     private String breed;
 
-    @Column(name = "age")
+    @Column(name = "date_of_birth")
+    private LocalDate dateOfBirth;
+
+    @Transient
     private int age;
 
     @Column(name = "status")
@@ -59,6 +65,7 @@ public class Pet {
     @JoinColumn(name = "id_own", nullable = false)
     private Owner owner;
 
+    @JsonIgnore
     @JsonManagedReference
     @OneToMany(mappedBy = "pet", fetch = FetchType.LAZY)
     private Set<Appointment> appointments = new HashSet<>();

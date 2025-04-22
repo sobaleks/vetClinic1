@@ -9,6 +9,7 @@ import com.vetClinic.utils.DtoMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @Service
@@ -38,6 +39,9 @@ public class PetService {
     }
 
     public Pet createPet(PetRequestDTO petRequestDTO) {
+        if (petRequestDTO.getDateOfBirth().isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Некорректная дата рождения!");
+        }
         Pet pet = DtoMapper.fromPetRequestDtoToPet(petRequestDTO);
         userAccess.adminOrUserAuthorization(petRequestDTO.getIdOwn());
         return petRepository.save(pet);
@@ -46,6 +50,9 @@ public class PetService {
     public Pet updatePet(PetRequestDTO petRequestDTO) {
         petRepository.findById(petRequestDTO.getId()).orElseThrow(
                 () -> new ObjectNotFoundException("Pet with id " + petRequestDTO.getId() + " not found"));
+        if (petRequestDTO.getDateOfBirth().isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Некорректная дата рождения!");
+        }
         Pet pet = DtoMapper.fromPetRequestDtoToPet(petRequestDTO);
         userAccess.adminOrUserAuthorization(petRequestDTO.getIdOwn());
         return petRepository.save(pet);
