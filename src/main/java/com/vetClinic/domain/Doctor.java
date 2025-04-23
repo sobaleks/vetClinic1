@@ -42,11 +42,14 @@ public class Doctor {
     @Column(name = "tel_number")
     private String telephoneNumber;
 
-    @Column(name = "staff_login")
+    @Column(name = "doc_login")
     private String login;
 
-    @Column(name = "staff_pas")
+    @Column(name = "doc_pas")
     private String password;
+
+    @Column(name = "image_base64", columnDefinition = "TEXT")  // TEXT для больших данных
+    private String imageBase64;
 
     @Column(name = "role")
     private String role;

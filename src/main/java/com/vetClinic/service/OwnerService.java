@@ -61,6 +61,10 @@ public class OwnerService {
         if (ownerRepository.findOwnerByLogin(owner.getLogin()).isPresent()) {
             throw new DataAccessException("User with name " + owner.getLogin() + " already exists");
         }
+        if (owner.getImageBase64() != null
+                && owner.getImageBase64().length() > 1_000_000) {
+            throw new IllegalArgumentException("Фото слишком большое! Максимум 1 МБ.");
+        }
         owner.setPassword(passwordEncoder.encode(owner.getPassword()));
         owner.setRole("USER");
         return ownerRepository.save(owner);
@@ -69,6 +73,10 @@ public class OwnerService {
     public Owner updateOwner(Owner owner) {
         ownerRepository.findById(owner.getId()).orElseThrow(
                 () -> new ObjectNotFoundException("User with id " + owner.getId() + " not found"));
+        if (owner.getImageBase64() != null
+                && owner.getImageBase64().length() > 1_000_000) {
+            throw new IllegalArgumentException("Фото слишком большое! Максимум 1 МБ.");
+        }
         owner.setPassword(passwordEncoder.encode(owner.getPassword()));
         owner.setRole("USER");
         userAccess.adminOrUserAuthorization(owner.getId());

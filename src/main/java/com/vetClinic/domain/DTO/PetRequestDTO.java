@@ -13,6 +13,7 @@ public class PetRequestDTO {
     private String breed;
     private LocalDate dateOfBirth;
     private int age;
+    private String imageBase64;
     private String status;
     private int idOwn;
 }

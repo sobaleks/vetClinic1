@@ -53,6 +53,7 @@ public class DtoMapper {
         pet.setType(petRequestDTO.getType());
         pet.setBreed(petRequestDTO.getBreed());
         pet.setDateOfBirth(petRequestDTO.getDateOfBirth());
+        pet.setImageBase64(petRequestDTO.getImageBase64());
         pet.setStatus(petRequestDTO.getStatus());
         pet.setOwner(ownerRepository.findById(petRequestDTO.getIdOwn()).get());
         return pet;
@@ -64,6 +65,7 @@ public class DtoMapper {
         ownerResponseDTO.setSurname(owner.getSurname());
         ownerResponseDTO.setEmail(owner.getEmail());
         ownerResponseDTO.setTelephoneNumber(owner.getTelephoneNumber());
+        ownerResponseDTO.setImageBase64(owner.getImageBase64());
         ownerResponseDTO.setPetsList(owner.getPetsList());
         return ownerResponseDTO;
     }
@@ -74,6 +76,7 @@ public class DtoMapper {
         doctorResponseDTO.setEmail(doctor.getEmail());
         doctorResponseDTO.setTelephoneNumber(doctor.getTelephoneNumber());
         doctorResponseDTO.setSpecialization(doctor.getSpecialization());
+        doctorResponseDTO.setImageBase64(doctor.getImageBase64());
         return doctorResponseDTO;
     }
 

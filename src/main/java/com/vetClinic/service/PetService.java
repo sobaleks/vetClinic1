@@ -42,6 +42,10 @@ public class PetService {
         if (petRequestDTO.getDateOfBirth().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Некорректная дата рождения!");
         }
+        if (petRequestDTO.getImageBase64() != null
+                && petRequestDTO.getImageBase64().length() > 1_000_000) {
+            throw new IllegalArgumentException("Фото слишком большое! Максимум 1 МБ.");
+        }
         Pet pet = DtoMapper.fromPetRequestDtoToPet(petRequestDTO);
         userAccess.adminOrUserAuthorization(petRequestDTO.getIdOwn());
         return petRepository.save(pet);
@@ -52,6 +56,10 @@ public class PetService {
                 () -> new ObjectNotFoundException("Pet with id " + petRequestDTO.getId() + " not found"));
         if (petRequestDTO.getDateOfBirth().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Некорректная дата рождения!");
+        }
+        if (petRequestDTO.getImageBase64() != null
+                && petRequestDTO.getImageBase64().length() > 1_000_000) {
+            throw new IllegalArgumentException("Фото слишком большое! Максимум 1 МБ.");
         }
         Pet pet = DtoMapper.fromPetRequestDtoToPet(petRequestDTO);
         userAccess.adminOrUserAuthorization(petRequestDTO.getIdOwn());

@@ -53,6 +53,9 @@ public class Pet {
     @Transient
     private int age;
 
+    @Column(name = "image_base64", columnDefinition = "TEXT")  // TEXT для больших данных
+    private String imageBase64;
+
     @Column(name = "status")
     private String status;
 

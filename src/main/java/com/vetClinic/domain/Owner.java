@@ -58,6 +58,9 @@ public class Owner {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "image_base64", columnDefinition = "TEXT")  // TEXT для больших данных
+    private String imageBase64;
+
     @JsonIgnore
     @OneToMany(mappedBy = "owner", fetch = FetchType.EAGER)
     private Set<Pet> petsList = new HashSet<>();

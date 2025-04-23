@@ -70,6 +70,10 @@ public class DoctorService {
         if (doctorRepository.findDoctorByLogin(doctor.getLogin()).isPresent()) {
             throw new DataAccessException("User with name " + doctor.getLogin() + " already exists");
         }
+        if (doctor.getImageBase64() != null
+                && doctor.getImageBase64().length() > 1_000_000) {
+            throw new IllegalArgumentException("Фото слишком большое! Максимум 1 МБ.");
+        }
         doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
         doctor.setRole("DOCTOR");
         userAccess.adminAuthorization();
@@ -79,6 +83,10 @@ public class DoctorService {
     public Doctor updateDoctor(Doctor doctor) {
         doctorRepository.findById(doctor.getId()).orElseThrow(
                 () -> new ObjectNotFoundException("Doctor with id " + doctor.getId() + " not found"));
+        if (doctor.getImageBase64() != null
+                && doctor.getImageBase64().length() > 1_000_000) {
+            throw new IllegalArgumentException("Фото слишком большое! Максимум 1 МБ.");
+        }
         doctor.setPassword(passwordEncoder.encode(doctor.getPassword()));
         userAccess.doctorAuthorization(doctor.getId());
         return doctorRepository.save(doctor);

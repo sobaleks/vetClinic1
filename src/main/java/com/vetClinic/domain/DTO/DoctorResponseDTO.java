@@ -9,4 +9,5 @@ public class DoctorResponseDTO {
     private String email;
     private String specialization;
     private String telephoneNumber;
+    private String imageBase64;
 }
