@@ -5,6 +5,7 @@ import com.vetClinic.domain.Owner;
 import com.vetClinic.domain.Pet;
 import com.vetClinic.service.OwnerService;
 import com.vetClinic.service.PetService;
+import com.vetClinic.utils.JwtUtil;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/owner")
@@ -28,14 +31,16 @@ public class OwnerController {
 
     OwnerService ownerService;
 
+    private JwtUtil jwtUtil;
     PetService petService;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public OwnerController(OwnerService ownerService, PetService petService) {
+    public OwnerController(OwnerService ownerService, PetService petService, JwtUtil jwtUtil) {
         this.ownerService = ownerService;
         this.petService = petService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/{id}")
@@ -56,7 +61,12 @@ public class OwnerController {
     public ResponseEntity<?> createOwner(@RequestBody @Valid Owner owner) {
         logger.info("doing /owner method getAllOwner!");
         Owner createOwner = ownerService.createOwner(owner);
-        return new ResponseEntity<>(createOwner, HttpStatus.OK);
+        String token = jwtUtil.generateToken(createOwner.getLogin(), createOwner.getRole());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("doctor", createOwner);
+        response.put("token", token);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping

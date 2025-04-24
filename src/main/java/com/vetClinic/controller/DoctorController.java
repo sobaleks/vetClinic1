@@ -5,6 +5,7 @@ import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.Doctor;
 import com.vetClinic.domain.VetCard;
 import com.vetClinic.service.DoctorService;
+import com.vetClinic.utils.JwtUtil;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,19 +23,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/doctor")
 public class DoctorController {
 
     DoctorService doctorService;
-
+    private JwtUtil jwtUtil;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public DoctorController(DoctorService doctorService) {
+    public DoctorController(DoctorService doctorService, JwtUtil jwtUtil) {
+
         this.doctorService = doctorService;
+        this.jwtUtil = jwtUtil;
     }
 
     @GetMapping("/{id}")
@@ -51,12 +56,21 @@ public class DoctorController {
         return new ResponseEntity<>(doctors, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<?> createDoctor(
-            @RequestBody @Valid Doctor doctor) {
+
+
+    @PostMapping()
+    public ResponseEntity<?> createDoctor(@RequestBody @Valid Doctor doctor) {
         logger.info("doing /doctor method createDoctor!");
-        Doctor createDoctor = doctorService.createDoctor(doctor);
-        return new ResponseEntity<>(createDoctor, HttpStatus.OK);
+
+        Doctor createdDoctor = doctorService.createDoctor(doctor);
+
+        String token = jwtUtil.generateToken(createdDoctor.getLogin(), createdDoctor.getRole());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("doctor", createdDoctor);
+        response.put("token", token);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping
