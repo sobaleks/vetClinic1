@@ -1,6 +1,7 @@
 package com.vetClinic.service;
 
 import com.vetClinic.authorization.UserAccess;
+import com.vetClinic.domain.DTO.LoginResponse;
 import com.vetClinic.domain.DTO.OwnerResponseDTO;
 import com.vetClinic.domain.Owner;
 import com.vetClinic.domain.Pet;
@@ -10,8 +11,11 @@ import com.vetClinic.repository.DoctorRepository;
 import com.vetClinic.repository.OwnerRepository;
 import com.vetClinic.repository.PetRepository;
 import com.vetClinic.utils.DtoMapper;
+import com.vetClinic.utils.JwtUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +29,17 @@ public class OwnerService {
     DoctorRepository doctorRepository;
     PasswordEncoder passwordEncoder;
     UserAccess userAccess;
-
+    JwtUtil jwtUtil;
     @Autowired
     public OwnerService(OwnerRepository ownerRepository, PetRepository petRepository,
                         DoctorRepository doctorRepository, PasswordEncoder passwordEncoder,
-                        UserAccess userAccess) {
+                        UserAccess userAccess, JwtUtil jwtUtil) {
         this.ownerRepository = ownerRepository;
         this.petRepository = petRepository;
         this.doctorRepository = doctorRepository;
         this.passwordEncoder = passwordEncoder;
         this.userAccess = userAccess;
+        this.jwtUtil = jwtUtil;
     }
 
 
@@ -113,5 +118,30 @@ public class OwnerService {
         }
         userAccess.adminAuthorization();
         return ownerResponseDTO;
+    }
+
+    public LoginResponse authenticate(String email, String password) {
+        Owner owner = ownerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(password, owner.getPassword())) {
+            throw new BadCredentialsException("Invalid password");
+        }
+
+        String token = jwtUtil.generateToken(owner.getEmail(), owner.getRole());
+
+        OwnerResponseDTO dto = mapToOwnerResponseDTO(owner);
+        return new LoginResponse(token, dto);
+    }
+
+    private OwnerResponseDTO mapToOwnerResponseDTO(Owner owner) {
+        OwnerResponseDTO dto = new OwnerResponseDTO();
+        dto.setName(owner.getName());
+        dto.setSurname(owner.getSurname());
+        dto.setEmail(owner.getEmail());
+        dto.setTelephoneNumber(owner.getTelephoneNumber());
+        dto.setImageBase64(owner.getImageBase64());
+        dto.setPetsList(owner.getPetsList()); // если они не ленивые или ты точно их хочешь
+        return dto;
     }
 }

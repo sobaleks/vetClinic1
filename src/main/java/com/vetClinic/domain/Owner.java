@@ -1,9 +1,6 @@
 package com.vetClinic.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -28,7 +25,6 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "owner")
 @ToString(exclude = {"petsList"})
 @EqualsAndHashCode(exclude = {"petsList"})
@@ -58,7 +54,7 @@ public class Owner {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "image_base64", columnDefinition = "TEXT")  // TEXT для больших данных
+    @Column(name = "own_image_base64", columnDefinition = "TEXT")  // TEXT для больших данных
     private String imageBase64;
 
     @JsonIgnore

@@ -27,10 +27,11 @@ Application use PostgreSQL database. For start the application you need Postgres
 
 * http://localhost:8080/owner/{id} - GET method, info about user 
 * http://localhost:8080/owner/myPets/{id} - GET method, info about pets for users
+* http://localhost:8080/owner/login - POST method, provides information by mail and password
 * http://localhost:8080/owner/consult - POST method, registration user for consultation
 * http://localhost:8080/owner - PUT method, change current user
 * http://localhost:8080/owner/recCons/ - PUT method registers the user for an appointment with a doctor
-* http://localhost:8080/owner{id} - DELETE method, delete current user's account 
+* http://localhost:8080/owner/{id} - DELETE method, delete current user's account 
 
 * http://localhost:8080/card/{id} - GET method, info about ambulance card pet users
 * http://localhost:8080/card/vaccinations/{id} - GET method, info about vaccinations pet 
@@ -79,10 +80,11 @@ Application use PostgreSQL database. For start the application you need Postgres
 
 * http://localhost:8080/owner/{id} - GET method, info about user
 * http://localhost:8080/owner/myPets/{id} - GET method, info about pets for users
+* http://localhost:8080/owner/login - POST method, provides information by mail and password
 * http://localhost:8080/owner/consult - POST method, registration user for consultation
 * http://localhost:8080/owner - PUT method, change current user
 * http://localhost:8080/owner/recCons/ - PUT method registers the user for an appointment with a doctor
-* http://localhost:8080/owner{id} - DELETE method, delete current user's account
+* http://localhost:8080/owner/{id} - DELETE method, delete current user's account
 
 * http://localhost:8080/card/{id} - GET method, info about ambulance card pet users
 * http://localhost:8080/card/vaccinations/{id} - GET method, info about vaccinations pet

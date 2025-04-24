@@ -1,5 +1,7 @@
 package com.vetClinic.controller;
 
+import com.vetClinic.domain.DTO.LoginRequestDTO;
+import com.vetClinic.domain.DTO.LoginResponse;
 import com.vetClinic.domain.DTO.OwnerResponseDTO;
 import com.vetClinic.domain.Owner;
 import com.vetClinic.domain.Pet;
@@ -33,7 +35,6 @@ public class OwnerController {
 
     private JwtUtil jwtUtil;
     PetService petService;
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -64,7 +65,7 @@ public class OwnerController {
         String token = jwtUtil.generateToken(createOwner.getLogin(), createOwner.getRole());
 
         Map<String, Object> response = new HashMap<>();
-        response.put("doctor", createOwner);
+        response.put("owner", createOwner);
         response.put("token", token);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -80,7 +81,7 @@ public class OwnerController {
     private ResponseEntity<?> deleteOwner(@PathVariable int id) {
         logger.info("doing /owner method deleteOwner!");
         ownerService.deleteOwner(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     @GetMapping("/myPets/{idOwn}")
@@ -103,6 +104,14 @@ public class OwnerController {
         ArrayList<OwnerResponseDTO> owners = ownerService.getOwnersNeedConsultation();
         return new ResponseEntity<>(owners, HttpStatus.OK);
     }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
+        logger.info("doing /owner/login method login!");
+        LoginResponse response = ownerService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
 }
 
 
