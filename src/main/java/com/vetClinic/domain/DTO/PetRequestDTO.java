@@ -2,6 +2,7 @@ package com.vetClinic.domain.DTO;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
@@ -13,6 +14,9 @@ public class PetRequestDTO {
     private String breed;
     private LocalDate dateOfBirth;
     private int age;
+    private String gender;
+    private BigDecimal weight;
+    private String passport;
     private String imageBase64;
     private String status;
     private int idOwn;

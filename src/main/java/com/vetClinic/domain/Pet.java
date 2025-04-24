@@ -20,6 +20,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,6 +50,15 @@ public class Pet {
 
     @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
+
+    @Column(name = "gender", length = 10)
+    private String gender; // MALE, FEMALE, UNKNOWN
+
+    @Column(name = "weight", precision = 5, scale = 2)
+    private BigDecimal weight; //
+
+    @Column(name = "passport", length = 20, unique = true)
+    private String passport;
 
     @Transient
     private int age;
