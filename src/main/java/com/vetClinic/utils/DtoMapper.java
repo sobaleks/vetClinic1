@@ -78,7 +78,9 @@ public class DtoMapper {
         doctorResponseDTO.setName(doctor.getName());
         doctorResponseDTO.setEmail(doctor.getEmail());
         doctorResponseDTO.setTelephoneNumber(doctor.getTelephoneNumber());
-        doctorResponseDTO.setSpecialization(doctor.getSpecialization());
+        doctorResponseDTO.setSpecialisation(doctor.getSpecialisation());
+        doctorResponseDTO.setDescription(doctor.getDescription());
+        doctorResponseDTO.setHashTag(doctor.getHashTag());
         doctorResponseDTO.setImageBase64(doctor.getImageBase64());
         return doctorResponseDTO;
     }

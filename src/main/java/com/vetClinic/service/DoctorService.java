@@ -18,7 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -113,7 +116,20 @@ public class DoctorService {
         return vetCardRepository.save(vetCard);
     }
 
-    public List<Doctor> getDoctorsBySpecialization(String specialization) {
-        return doctorRepository.findBySpecialization(specialization);
+    public List<Doctor> getDoctorsBySpecialisation(String specialisation) {
+        return doctorRepository.findBySpecialisation(specialisation);
+    }
+
+    public List<LinkedHashMap<String, Object>> getDoctorsGroupedBySpecialisation() {
+        List<Map<String, Object>> rawData = doctorRepository.findDoctorsWithSchedule();
+
+        return rawData.stream()
+                .map(item -> {
+                    LinkedHashMap<String, Object> orderedResult = new LinkedHashMap<>();
+                    orderedResult.put("specialisation", item.get("specialisation"));
+                    orderedResult.put("doctors", item.get("doctors"));
+                    return orderedResult;
+                })
+                .toList();
     }
 }

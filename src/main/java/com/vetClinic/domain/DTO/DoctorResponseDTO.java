@@ -7,7 +7,9 @@ public class DoctorResponseDTO {
 
     private String name;
     private String email;
-    private String specialization;
+    private String specialisation;
     private String telephoneNumber;
+    private String description;
+    private String hashTag;
     private String imageBase64;
 }

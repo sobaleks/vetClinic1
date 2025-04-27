@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -104,9 +105,14 @@ public class DoctorController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Doctor>> searchBySpecialization(@RequestParam String specialization) {
-        List<Doctor> doctors = doctorService.getDoctorsBySpecialization(specialization);
+    public ResponseEntity<List<Doctor>> searchBySpecialisation(@RequestParam String specialisation) {
+        List<Doctor> doctors = doctorService.getDoctorsBySpecialisation(specialisation);
         return ResponseEntity.ok(doctors);
+    }
+    @GetMapping("/by-specialisation")
+    public ResponseEntity<List<LinkedHashMap<String, Object>>> getDoctorsBySpecialisation() {
+        List<LinkedHashMap<String, Object>> result = doctorService.getDoctorsGroupedBySpecialisation();
+        return ResponseEntity.ok(result);
     }
 }
 

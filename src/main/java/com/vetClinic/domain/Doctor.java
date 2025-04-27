@@ -36,8 +36,8 @@ public class Doctor {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "specialization")
-    private String specialization;
+    @Column(name = "specialisation")
+    private String specialisation;
 
     @Column(name = "tel_number")
     private String telephoneNumber;
@@ -50,6 +50,12 @@ public class Doctor {
 
     @Column(name = "image_base64", columnDefinition = "TEXT")  // TEXT для больших данных
     private String imageBase64;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "hash_tag")
+    private String hashTag;
 
     @Column(name = "role")
     private String role;
