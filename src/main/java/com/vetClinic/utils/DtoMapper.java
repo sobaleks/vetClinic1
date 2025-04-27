@@ -3,6 +3,7 @@ package com.vetClinic.utils;
 import com.vetClinic.domain.Appointment;
 import com.vetClinic.domain.DTO.AppointmentRequestDTO;
 import com.vetClinic.domain.DTO.AppointmentResponseDTO;
+import com.vetClinic.domain.DTO.DoctorDayScheduleDTO;
 import com.vetClinic.domain.DTO.DoctorResponseDTO;
 import com.vetClinic.domain.DTO.DoctorScheduleRequestDTO;
 import com.vetClinic.domain.DTO.OwnerResponseDTO;
@@ -20,6 +21,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class DtoMapper {
@@ -146,5 +153,31 @@ public class DtoMapper {
 
         return schedule;
     }
+    public DoctorDayScheduleDTO toDoctorDayScheduleDTO(LocalDate date, DoctorSchedule daySchedule, List<Appointment> appointments) {
+        DoctorDayScheduleDTO dto = new DoctorDayScheduleDTO();
+        dto.setDate(date);
+
+        if (daySchedule != null && daySchedule.isWorking()) {
+            dto.setWorkingDay(true);
+            dto.setFrom(daySchedule.getStartTime().toLocalTime());
+            dto.setTo(daySchedule.getEndTime().toLocalTime());
+        } else {
+            dto.setWorkingDay(false);
+            dto.setFrom(LocalTime.of(0, 0));
+            dto.setTo(LocalTime.of(23, 59));
+        }
+
+        List<LocalTime> booked = appointments.stream()
+                .map(app -> app.getDateTime().toLocalTime())
+                .collect(Collectors.toList());
+
+        List<LocalTime> notAvailable = new ArrayList<>(); // пока без логики перерывов
+
+        dto.setBooked(booked);
+        dto.setNotAvailable(notAvailable);
+
+        return dto;
+    }
+
 }
 

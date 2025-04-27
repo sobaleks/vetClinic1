@@ -39,12 +39,16 @@ Application use PostgreSQL database. For start the application you need Postgres
 * http://localhost:8080/pet/{id} - GET method, info about pet  for users
 * http://localhost:8080/pet - PUT method, change current pet users
 
+* http://localhost:8080/doctor/by-specialisation - GET method, info about doctors
+
 * http://localhost:8080/appointment{id} - GET method, info about  appointment
 * http://localhost:8080/appointment/pet/{id} - GET method, shows the records of a certain pet
 * http://localhost:8080/appointment/owner/{id} - GET method, shows the records of a certain owner
 * http://localhost:8080/appointment -  POST method, create appointment
 * http://localhost:8080/appointment - PUT method, changes the pet's appointment
 * http://localhost:8080/appointment{id} - DELETE method,  delete appointment
+
+* http://localhost:8080/schedule/doctor/{doctor_id} - GET method, info about appointment doctors
 
 ## Available endpoints for doctor
 
@@ -72,6 +76,7 @@ Application use PostgreSQL database. For start the application you need Postgres
 * http://localhost:8080/appointment/pet/{id} - GET method, shows the records of a certain pet
 
 * http://localhost:8080/schedule/{id} - GET method, info about  doctor schedule
+* http://localhost:8080/schedule/doctor/{doctor_id} - GET method, info about appointment doctors
 * http://localhost:8080/schedule/day/{dayOfWeek} - GET method, shows entries for a specific day
 * http://localhost:8080/schedule/doctor/{id}/active - GET method,shows active doctor's records
 * http://localhost:8080/schedule/date/{date} - GET method, shows active records of the specified date
@@ -100,6 +105,7 @@ Application use PostgreSQL database. For start the application you need Postgres
 
 * http://localhost:8080/doctor/{id} - GET method, info about doctor
 * http://localhost:8080/doctor - GET method, info about all doctors doctor/createVK
+* http://localhost:8080/doctor/by-specialisation - GET method, info about doctors
 * http://localhost:8080/doctor/search - GET method produces doctors of the specified specialty
 * http://localhost:8080/doctor - POST method, create doctor or admin
 * http://localhost:8080/doctor/createVK - POST method, create vetcard pet doctors
@@ -116,6 +122,7 @@ Application use PostgreSQL database. For start the application you need Postgres
 * http://localhost:8080/appointment{id} - DELETE method,  delete appointment
 
 * http://localhost:8080/schedule/{id} - GET method, info about  doctor schedule
+* http://localhost:8080/schedule/doctor/{doctor_id} - GET method, info about appointment doctors
 * http://localhost:8080/schedule/day/{dayOfWeek} - GET method, shows entries for a specific day
 * http://localhost:8080/schedule/doctor/{id}/active - GET method,shows active doctor's records
 * http://localhost:8080/schedule/date/{date} - GET method, shows active records of the specified date

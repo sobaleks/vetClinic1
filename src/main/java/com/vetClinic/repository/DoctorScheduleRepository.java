@@ -10,6 +10,7 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface DoctorScheduleRepository extends JpaRepository<DoctorSchedule, Integer> {
@@ -48,5 +49,10 @@ public interface DoctorScheduleRepository extends JpaRepository<DoctorSchedule, 
             @Param("startTime") LocalTime startTime,
             @Param("endTime") LocalTime endTime
     );
-
+    @Query("""
+        SELECT ds FROM DoctorSchedule ds
+        WHERE ds.doctor.id = :doctorId
+        AND ds.isWorking = true
+    """)
+    List<DoctorSchedule> findWorkingDaysByDoctorId(@Param("doctorId") Integer doctorId);
 }

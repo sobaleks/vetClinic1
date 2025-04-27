@@ -32,4 +32,9 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
             @Param("excludeId") Integer excludeId);
 
     boolean existsByDoctorIdAndDateTimeBetween(Integer doctorId, LocalDateTime start, LocalDateTime end);
+    @Query("""
+        SELECT a FROM Appointment a
+        WHERE a.doctor.id = :doctorId
+    """)
+    List<Appointment> findAppointmentsByDoctorId(@Param("doctorId") Integer doctorId);
 }

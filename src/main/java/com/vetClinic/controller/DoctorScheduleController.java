@@ -1,5 +1,6 @@
 package com.vetClinic.controller;
 
+import com.vetClinic.domain.DTO.DoctorDayScheduleDTO;
 import com.vetClinic.domain.DTO.DoctorScheduleRequestDTO;
 import com.vetClinic.domain.DoctorSchedule;
 import com.vetClinic.service.DoctorScheduleService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/schedule")
@@ -91,5 +93,9 @@ public class DoctorScheduleController {
     public ResponseEntity<List<DoctorSchedule>> getSchedulesByDate(
             @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         return ResponseEntity.ok(doctorScheduleService.getSchedulesByDate(date));
+    }
+    @GetMapping("/doctor/{doctorId}")
+    public ResponseEntity<List<Map<String, Object>>> getDoctorSchedule(@PathVariable Integer doctorId) {
+        return ResponseEntity.ok(doctorScheduleService.getDoctorFullSchedule(doctorId));
     }
 }
