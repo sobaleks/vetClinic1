@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface UserAuthorization extends JpaRepository<Owner, Integer> {
 
-    @Query(nativeQuery = true, value = "SELECT owner_id, name, surname, email, tel_number,login, password, role FROM owner WHERE login=:login UNION SELECT doctor_id, full_name, email, specialization,tel_number,doc_login, doc_pas, role FROM doctor WHERE doc_login=:login ")
+    @Query(nativeQuery = true, value = "SELECT owner_id, name, surname, email, tel_number,login, password, role, own_image_base64 FROM owner WHERE login=:login UNION SELECT doctor_id, full_name, email, specialisation,tel_number,doc_login, doc_pas, role, image_base64 FROM doctor WHERE doc_login=:login ")
     Optional<Owner> findUserOrAdminByLogin(String login);
 }

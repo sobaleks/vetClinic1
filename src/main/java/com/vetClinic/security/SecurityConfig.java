@@ -30,7 +30,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/owner/consult").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.GET, "/owner/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.POST, "/owner/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/owner/login/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers(HttpMethod.POST, "/owner/login/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/owner/recCons/**").hasAnyRole("ADMIN","USER")
                 .requestMatchers(HttpMethod.PUT, "/owner/**").hasAnyRole("ADMIN", "USER")
                 .requestMatchers(HttpMethod.DELETE, "/owner/**").hasAnyRole("ADMIN", "USER")

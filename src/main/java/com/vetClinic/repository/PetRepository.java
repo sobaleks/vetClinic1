@@ -22,7 +22,7 @@ public interface PetRepository extends JpaRepository<Pet, Integer> {
     void changeStatus(int id, String changeStatus);
 
     @Modifying
-    @Query(nativeQuery = true, value = "SELECT  pet_id,  name, breed, age, status, id_own FROM pet  WHERE id_own=:idOwn")
+    @Query(nativeQuery = true, value = "SELECT  pet_id,  name, breed, status, id_own FROM pet  WHERE id_own=:idOwn")
     ArrayList<Pet> getPetsByIdOwn(int idOwn);
 
     Optional<Pet> findPetByName(String name);

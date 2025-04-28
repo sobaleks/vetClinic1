@@ -1,6 +1,7 @@
 package com.vetClinic.domain.DTO;
 
 import com.vetClinic.domain.Pet;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 import java.util.HashSet;

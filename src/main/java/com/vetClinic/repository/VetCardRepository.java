@@ -12,4 +12,5 @@ import java.util.List;
 public interface VetCardRepository extends JpaRepository<VetCard, Integer> {
     @Query("SELECT v.vaccination FROM VetCard v WHERE v.pet.id = :petId AND v.vaccination IS NOT NULL")
     List<String> findVaccinationsByPetId(@Param("petId") int petId);
+
 }
