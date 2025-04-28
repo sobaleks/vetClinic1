@@ -128,7 +128,7 @@ public class OwnerService {
             throw new BadCredentialsException("Invalid password");
         }
 
-        String token = jwtUtil.generateToken(owner.getEmail(), owner.getRole());
+        String token = jwtUtil.generateToken(owner.getLogin(), owner.getRole());
 
         OwnerResponseDTO dto = mapToOwnerResponseDTO(owner);
         return new LoginResponse(token, dto);
