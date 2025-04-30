@@ -27,7 +27,7 @@ Application use PostgreSQL database. For start the application you need Postgres
 
 * http://localhost:8080/owner/{id} - GET method, info about user 
 * http://localhost:8080/owner/myPets/{id} - GET method, info about pets for users
-* http://localhost:8080/owner/login - POST method, provides information by mail and password
+* http://localhost:8080/owner/login - POST method, provides information by mail and password about owner
 * http://localhost:8080/owner/consult - POST method, registration user for consultation
 * http://localhost:8080/owner - PUT method, change current user
 * http://localhost:8080/owner/recCons/ - PUT method registers the user for an appointment with a doctor
@@ -66,6 +66,7 @@ Application use PostgreSQL database. For start the application you need Postgres
 * http://localhost:8080/doctor/{id} - GET method, info about doctor
 * http://localhost:8080/doctor - GET method, info about all doctors doctor/createVK
 * http://localhost:8080/doctor/search - GET method produces doctors of the specified specialty
+* http://localhost:8080/doctor/login - POST method, provides information by mail and password about doctor
 * http://localhost:8080/doctor/createVK - POST method, create vetcard pet doctors
 * http://localhost:8080/doctor - PUT method, change current doctors
 * http://localhost:8080/doctor/change/{id}/{changeStatus} - PUT method, change status pet
@@ -106,6 +107,7 @@ Application use PostgreSQL database. For start the application you need Postgres
 * http://localhost:8080/doctor/{id} - GET method, info about doctor
 * http://localhost:8080/doctor - GET method, info about all doctors doctor/createVK
 * http://localhost:8080/doctor/by-specialisation - GET method, info about doctors
+* http://localhost:8080/doctor/login - POST method, provides information by mail and password about doctor
 * http://localhost:8080/doctor/search - GET method produces doctors of the specified specialty
 * http://localhost:8080/doctor - POST method, create doctor or admin
 * http://localhost:8080/doctor/createVK - POST method, create vetcard pet doctors

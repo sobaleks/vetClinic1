@@ -1,6 +1,7 @@
 package com.vetClinic.repository;
 
 import com.vetClinic.domain.Doctor;
+import com.vetClinic.domain.Owner;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     Optional<Doctor> findDoctorByLogin(String login);
-
+    Optional<Doctor> findByEmail(String email);
     // Поиск по специальности (частичное совпадение, игнор регистра)
     @Query("SELECT d FROM Doctor d WHERE LOWER(d.specialisation) LIKE LOWER(CONCAT('%', :specialisation, '%'))")
     List<Doctor> findBySpecialisation(@Param("specialisation") String specialisation);
@@ -26,6 +27,7 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
             json_build_object(
                 'id', d.doctor_id,
                 'fullName', d.full_name,
+                'imageBase64', d.image_base64,
                 'hashTags', CASE\s
                         
                                     WHEN d.hash_tag IS NOT NULL AND d.hash_tag != ''\s

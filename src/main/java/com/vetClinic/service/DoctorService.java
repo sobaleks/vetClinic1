@@ -2,8 +2,12 @@ package com.vetClinic.service;
 
 import com.vetClinic.authorization.UserAccess;
 import com.vetClinic.domain.DTO.DoctorResponseDTO;
+import com.vetClinic.domain.DTO.LoginResponse;
+import com.vetClinic.domain.DTO.LoginResponseDoctor;
+import com.vetClinic.domain.DTO.OwnerResponseDTO;
 import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.Doctor;
+import com.vetClinic.domain.Owner;
 import com.vetClinic.domain.VetCard;
 import com.vetClinic.exeptions.DataAccessException;
 import com.vetClinic.exeptions.ObjectNotFoundException;
@@ -12,8 +16,11 @@ import com.vetClinic.repository.OwnerRepository;
 import com.vetClinic.repository.PetRepository;
 import com.vetClinic.repository.VetCardRepository;
 import com.vetClinic.utils.DtoMapper;
+import com.vetClinic.utils.JwtUtil;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +32,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.vetClinic.utils.DtoMapper.fromDoctorToDoctorResponseDTO;
 
 
 @Service
@@ -40,24 +49,25 @@ public class DoctorService {
     PasswordEncoder passwordEncoder;
 
     UserAccess userAccess;
-
+    JwtUtil jwtUtil;
     @Autowired
     public DoctorService(DoctorRepository doctorRepository, PetRepository petRepository,
                          VetCardRepository vetCardRepository, OwnerRepository ownerRepository,
-                         PasswordEncoder passwordEncoder, UserAccess userAccess) {
+                         PasswordEncoder passwordEncoder, UserAccess userAccess, JwtUtil jwtUtil) {
         this.doctorRepository = doctorRepository;
         this.petRepository = petRepository;
         this.vetCardRepository = vetCardRepository;
         this.ownerRepository = ownerRepository;
         this.passwordEncoder = passwordEncoder;
         this.userAccess = userAccess;
+        this.jwtUtil = jwtUtil;
     }
 
     public DoctorResponseDTO getDoctorById(int id) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new ObjectNotFoundException("Doctor with id " + id + " not found"));
         userAccess.doctorAuthorization(id);
-        return DtoMapper.fromDoctorToDoctorResponseDTO(doctor);
+        return fromDoctorToDoctorResponseDTO(doctor);
     }
 
     public ArrayList<Doctor> getAllDoctors() {
@@ -67,7 +77,7 @@ public class DoctorService {
             throw new ObjectNotFoundException("don't find doctors");
         }
         for (Doctor d : doctors) {
-            doctorResponseDTO.add(DtoMapper.fromDoctorToDoctorResponseDTO(d));
+            doctorResponseDTO.add(fromDoctorToDoctorResponseDTO(d));
         }
         return doctors;
     }
@@ -134,5 +144,18 @@ public class DoctorService {
                     return orderedResult;
                 })
                 .toList();
+    }
+    public LoginResponseDoctor authenticate(String email, String password) {
+        Doctor doctor = doctorRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (!passwordEncoder.matches(password, doctor.getPassword())) {
+            throw new BadCredentialsException("Invalid password");
+        }
+
+        String token = jwtUtil.generateToken(doctor.getLogin(), doctor.getRole());
+
+        DoctorResponseDTO doctorResponseDTO = fromDoctorToDoctorResponseDTO(doctor);
+        return new LoginResponseDoctor(token, doctorResponseDTO);
     }
 }

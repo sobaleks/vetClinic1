@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/doctor/by-specialisation").hasAnyRole("ADMIN", "DOCTOR", "USER")
                 .requestMatchers(HttpMethod.GET, "/doctor/search/**").hasAnyRole("ADMIN", "DOCTOR", "USER")
                 .requestMatchers(HttpMethod.GET, "/doctor/**").hasAnyRole("ADMIN", "DOCTOR")
+                .requestMatchers(HttpMethod.POST, "/doctor/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/doctor/createVK").hasAnyRole("ADMIN", "DOCTOR")
                 .requestMatchers(HttpMethod.POST, "/doctor/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/doctor/**").hasAnyRole("ADMIN", "DOCTOR")

@@ -1,6 +1,9 @@
 package com.vetClinic.controller;
 
 import com.vetClinic.domain.DTO.DoctorResponseDTO;
+import com.vetClinic.domain.DTO.LoginRequestDTO;
+import com.vetClinic.domain.DTO.LoginResponse;
+import com.vetClinic.domain.DTO.LoginResponseDoctor;
 import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.Doctor;
 import com.vetClinic.domain.VetCard;
@@ -113,6 +116,12 @@ public class DoctorController {
     public ResponseEntity<List<LinkedHashMap<String, Object>>> getDoctorsBySpecialisation() {
         List<LinkedHashMap<String, Object>> result = doctorService.getDoctorsGroupedBySpecialisation();
         return ResponseEntity.ok(result);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
+        logger.info("doing /doctor/login method login!");
+        LoginResponseDoctor response = doctorService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
 
