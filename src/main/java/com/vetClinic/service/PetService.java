@@ -48,6 +48,7 @@ public class PetService {
         }
         Pet pet = DtoMapper.fromPetRequestDtoToPet(petRequestDTO);
         userAccess.adminOrUserAuthorization(petRequestDTO.getIdOwn());
+        pet.setStatus("Питомец нигде не записан");
         return petRepository.save(pet);
     }
 
@@ -62,7 +63,16 @@ public class PetService {
             throw new IllegalArgumentException("Фото слишком большое! Максимум 1 МБ.");
         }
         Pet pet = DtoMapper.fromPetRequestDtoToPet(petRequestDTO);
+
+        // Если статус не передан, сохраняем старый
+        Pet existingPet = petRepository.findById(petRequestDTO.getId())
+                .orElseThrow(() -> new ObjectNotFoundException("Pet with id " + petRequestDTO.getId() + " not found"));
+        if (petRequestDTO.getStatus() == null || petRequestDTO.getStatus().isEmpty()) {
+            pet.setStatus(existingPet.getStatus());
+        }
+        //Pet pet = DtoMapper.fromPetRequestDtoToPet(petRequestDTO);
         userAccess.adminOrUserAuthorization(petRequestDTO.getIdOwn());
+
         return petRepository.save(pet);
     }
 

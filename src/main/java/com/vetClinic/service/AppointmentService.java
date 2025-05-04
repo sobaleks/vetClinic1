@@ -2,10 +2,12 @@ package com.vetClinic.service;
 import com.vetClinic.authorization.UserAccess;
 import com.vetClinic.domain.DTO.AppointmentRequestDTO;
 import com.vetClinic.domain.Appointment;
+import com.vetClinic.domain.Pet;
 import com.vetClinic.exeptions.NoPetAppointmentsException;
 import com.vetClinic.exeptions.ObjectNotFoundException;
 import com.vetClinic.repository.AppointmentRepository;
 import com.vetClinic.repository.DoctorScheduleRepository;
+import com.vetClinic.repository.PetRepository;
 import com.vetClinic.utils.DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,12 +29,15 @@ public class AppointmentService {
     private final DoctorScheduleRepository doctorScheduleRepository;
     private final UserAccess userAccess;
 
+    private PetRepository petRepository;
+
     @Autowired
     public AppointmentService(AppointmentRepository appointmentRepository, UserAccess userAccess,
-                              DoctorScheduleRepository doctorScheduleRepository) {
+                              DoctorScheduleRepository doctorScheduleRepository, PetRepository petRepository) {
         this.appointmentRepository = appointmentRepository;
         this.userAccess = userAccess;
         this.doctorScheduleRepository = doctorScheduleRepository;
+        this.petRepository = petRepository;
     }
 
     // Получение записи по ID
@@ -79,6 +85,11 @@ public class AppointmentService {
                 startTime,
                 endTime)) {
             throw new IllegalStateException("Врач не работает в это время");
+        }
+        Pet pet = appointment.getPet();
+        if (pet != null) {
+            String formattedDateTime = dto.getDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            petRepository.updateStatusById(pet.getId(), "записан на приём: " + formattedDateTime);
         }
         return appointmentRepository.save(appointment);
     }

@@ -64,7 +64,9 @@ public class DtoMapper {
         pet.setPassport(petRequestDTO.getPassport());
         pet.setDateOfBirth(petRequestDTO.getDateOfBirth());
         pet.setImageBase64(petRequestDTO.getImageBase64());
-        pet.setStatus(petRequestDTO.getStatus());
+        if (petRequestDTO.getStatus() != null && !petRequestDTO.getStatus().isEmpty()) {
+            pet.setStatus(petRequestDTO.getStatus());
+        }
         pet.setOwner(ownerRepository.findById(petRequestDTO.getIdOwn()).get());
         return pet;
     }

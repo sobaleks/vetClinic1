@@ -3,6 +3,7 @@ package com.vetClinic.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -52,7 +53,7 @@ public class Pet {
     private LocalDate dateOfBirth;
 
     @Column(name = "gender", length = 10)
-    private String gender; // MALE, FEMALE, UNKNOWN
+    private String gender; // М, Ж, О
 
     @Column(name = "weight", precision = 5, scale = 2)
     private BigDecimal weight; //
@@ -78,8 +79,7 @@ public class Pet {
     @JoinColumn(name = "id_own", nullable = false)
     private Owner owner;
 
-    @JsonIgnore
     @JsonManagedReference
-    @OneToMany(mappedBy = "pet", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "pet", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Appointment> appointments = new HashSet<>();
 }
