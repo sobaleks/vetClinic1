@@ -5,8 +5,10 @@ import com.vetClinic.domain.DTO.LoginResponse;
 import com.vetClinic.domain.DTO.OwnerResponseDTO;
 import com.vetClinic.domain.Owner;
 import com.vetClinic.domain.Pet;
+import com.vetClinic.repository.OwnerRepository;
 import com.vetClinic.service.OwnerService;
 import com.vetClinic.service.PetService;
+import com.vetClinic.utils.DtoMapper;
 import com.vetClinic.utils.JwtUtil;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -20,28 +22,32 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/owner")
 public class OwnerController {
 
     OwnerService ownerService;
-
+    OwnerRepository ownerRepository;
     private JwtUtil jwtUtil;
     PetService petService;
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public OwnerController(OwnerService ownerService, PetService petService, JwtUtil jwtUtil) {
+    public OwnerController(OwnerService ownerService, PetService petService, JwtUtil jwtUtil,
+                           OwnerRepository ownerRepository) {
         this.ownerService = ownerService;
         this.petService = petService;
         this.jwtUtil = jwtUtil;
+        this.ownerRepository = ownerRepository;
     }
 
     @GetMapping("/{id}")
@@ -110,8 +116,6 @@ public class OwnerController {
         LoginResponse response = ownerService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
 }
 
 

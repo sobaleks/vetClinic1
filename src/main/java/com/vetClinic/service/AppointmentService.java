@@ -9,6 +9,7 @@ import com.vetClinic.repository.AppointmentRepository;
 import com.vetClinic.repository.DoctorScheduleRepository;
 import com.vetClinic.repository.PetRepository;
 import com.vetClinic.utils.DtoMapper;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,7 +59,7 @@ public class AppointmentService {
         userAccess.adminAuthorization();
         return appointments;
     }
-
+    @Transactional
     // Создание новой записи
     public Appointment createAppointment(AppointmentRequestDTO dto) {
         LocalDateTime end = dto.getDateTime().plusMinutes(dto.getDurationMinutes());
@@ -93,7 +94,7 @@ public class AppointmentService {
         }
         return appointmentRepository.save(appointment);
     }
-
+    @Transactional
     public Appointment updateAppointment(AppointmentRequestDTO dto) {
         LocalDateTime end = dto.getDateTime().plusMinutes(dto.getDurationMinutes());
 
@@ -122,7 +123,7 @@ public class AppointmentService {
         userAccess.adminOrDoctorAuthorization();
         return appointmentRepository.save(appointment);
     }
-
+    @Transactional
     // Удаление записи
     public void deleteAppointment(int id) {
         Appointment appointment = appointmentRepository.findById(id)
