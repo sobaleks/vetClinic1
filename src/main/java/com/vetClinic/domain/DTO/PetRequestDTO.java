@@ -13,7 +13,6 @@ public class PetRequestDTO {
     private String type;
     private String breed;
     private LocalDate dateOfBirth;
-    private int age;
     private String gender;
     private BigDecimal weight;
     private String passport;

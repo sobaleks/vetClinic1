@@ -61,8 +61,6 @@ public class Pet {
     @Column(name = "passport", length = 20, unique = true)
     private String passport;
 
-    @Transient
-    private int age;
 
     @Column(name = "pet_image_base64", columnDefinition = "TEXT")  // TEXT для больших данных
     private String imageBase64;

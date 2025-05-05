@@ -73,6 +73,7 @@ public class DtoMapper {
 
     public static OwnerResponseDTO fromOwnerToOwnerResponseDTO(Owner owner) {
         OwnerResponseDTO ownerResponseDTO = new OwnerResponseDTO();
+        ownerResponseDTO.setId(owner.getId());
         ownerResponseDTO.setName(owner.getName());
         ownerResponseDTO.setSurname(owner.getSurname());
         ownerResponseDTO.setEmail(owner.getEmail());

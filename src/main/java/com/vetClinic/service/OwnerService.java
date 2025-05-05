@@ -138,12 +138,13 @@ public class OwnerService {
 
     private OwnerResponseDTO mapToOwnerResponseDTO(Owner owner) {
         OwnerResponseDTO dto = new OwnerResponseDTO();
+        dto.setId(owner.getId());
         dto.setName(owner.getName());
         dto.setSurname(owner.getSurname());
         dto.setEmail(owner.getEmail());
         dto.setTelephoneNumber(owner.getTelephoneNumber());
         dto.setImageBase64(owner.getImageBase64());
-        dto.setPetsList(owner.getPetsList()); // если они не ленивые или ты точно их хочешь
+        dto.setPetsList(owner.getPetsList());
         return dto;
     }
 }

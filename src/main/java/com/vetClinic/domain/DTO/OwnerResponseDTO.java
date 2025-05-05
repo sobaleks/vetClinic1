@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Data
 public class OwnerResponseDTO {
-
+    private int id;
     private String name;
     private String surname;
     private String email;
