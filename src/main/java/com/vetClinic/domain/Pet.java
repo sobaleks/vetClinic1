@@ -40,7 +40,6 @@ public class Pet {
     private Integer id;
 
     @Column(name = "name")
-    @Pattern(regexp = "[A-z]*")
     private String name;
 
     @Column(name = "type")
@@ -78,6 +77,6 @@ public class Pet {
     private Owner owner;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pet", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pet", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Appointment> appointments = new HashSet<>();
 }
