@@ -197,8 +197,8 @@ public class DoctorScheduleService {
 
         // Определяем середину рабочего дня
         long halfWorkMinutes = workMinutes / 2;
-        LocalTime lunchStart = from.plusMinutes(halfWorkMinutes).minusMinutes(30); // начало обеда на 30 минут раньше середины
-        LocalTime lunchEnd = lunchStart.plusHours(1);
+        LocalTime lunchStart = from.plusMinutes(halfWorkMinutes);
+        LocalTime lunchEnd = lunchStart.plusMinutes(30);
 
         return List.of(lunchStart, lunchEnd);
     }
