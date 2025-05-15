@@ -73,7 +73,7 @@ public class AppointmentService {
         }
 
         Appointment appointment = DtoMapper.fromAppointmentRequestDtoToAppointment(dto);
-        userAccess.adminOrDoctorAuthorization();
+        userAccess.adminOrUserAuthorization(dto.getOwnerId());
         DayOfWeek dayOfWeek = dto.getDateTime().getDayOfWeek();
         LocalDate date = dto.getDateTime().toLocalDate();
         LocalTime startTime = dto.getDateTime().toLocalTime();

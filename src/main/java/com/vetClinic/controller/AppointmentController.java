@@ -53,6 +53,7 @@ public class AppointmentController {
     public ResponseEntity<?> createAppointment(
             @RequestBody @Valid AppointmentRequestDTO appointmentRequestDTO) {
         logger.info("POST /appointments - Creating new appointment");
+        
         Appointment appointment = appointmentService.createAppointment(appointmentRequestDTO);
         return new ResponseEntity<>(appointment, HttpStatus.CREATED);
     }
