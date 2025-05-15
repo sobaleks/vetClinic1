@@ -8,6 +8,7 @@ import com.vetClinic.domain.DTO.DoctorResponseDTO;
 import com.vetClinic.domain.DTO.DoctorScheduleRequestDTO;
 import com.vetClinic.domain.DTO.OwnerResponseDTO;
 import com.vetClinic.domain.DTO.PetRequestDTO;
+import com.vetClinic.domain.DTO.PetResponseDTO;
 import com.vetClinic.domain.DTO.VetCardRequestDTO;
 import com.vetClinic.domain.Doctor;
 import com.vetClinic.domain.DoctorSchedule;
@@ -118,13 +119,34 @@ public class DtoMapper {
         response.setDateTime(appointment.getDateTime());
         response.setDurationMinutes(appointment.getDurationMinutes());
         response.setStatus(appointment.getStatus());
-
         if (appointment.getDoctor() != null) {
-            response.setDoctorId(appointment.getDoctor().getId());
+            Doctor doctor = appointment.getDoctor();
+            DoctorResponseDTO doctorDTO = new DoctorResponseDTO();
+            doctorDTO.setName(doctor.getName());
+            doctorDTO.setEmail(doctor.getEmail());
+            doctorDTO.setSpecialisation(doctor.getSpecialisation());
+            doctorDTO.setTelephoneNumber(doctor.getTelephoneNumber());
+            doctorDTO.setDescription(doctor.getDescription());
+            doctorDTO.setHashTag(doctor.getHashTag());
+            doctorDTO.setImageBase64(doctor.getImageBase64());
+            response.setDoctor(doctorDTO);
         }
 
         if (appointment.getPet() != null) {
-            response.setPetId(appointment.getPet().getId());
+            Pet pet = appointment.getPet();
+            PetResponseDTO petDTO = new PetResponseDTO();
+            petDTO.setId(pet.getId());
+            petDTO.setName(pet.getName());
+            petDTO.setType(pet.getType());
+            petDTO.setBreed(pet.getBreed());
+            petDTO.setDateOfBirth(pet.getDateOfBirth());
+            petDTO.setGender(pet.getGender());
+            petDTO.setWeight(pet.getWeight());
+            petDTO.setPassport(pet.getPassport());
+            petDTO.setImageBase64(pet.getImageBase64());
+            petDTO.setStatus(pet.getStatus());
+            petDTO.setIdOwn(pet.getOwner() != null ? pet.getOwner().getId() : 0);
+            response.setPet(petDTO);
         }
 
         if (appointment.getOwner() != null) {
@@ -149,7 +171,7 @@ public class DtoMapper {
         schedule.setEndTime(dto.getEndTime());
         schedule.setWorking(dto.isWorking());
 
-        // Находим врача по ID через репозиторий (аналогично поиску питомца в VetCard)
+        // Находим врача по ID через репозиторий
         Doctor doctor = doctorRepository.findById(dto.getDoctorId())
                 .orElseThrow(() -> new IllegalArgumentException("Врач с ID " + dto.getDoctorId() + " не найден"));
         schedule.setDoctor(doctor);

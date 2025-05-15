@@ -1,5 +1,6 @@
 package com.vetClinic.controller;
 
+import com.vetClinic.domain.Appointment;
 import com.vetClinic.domain.DTO.LoginRequestDTO;
 import com.vetClinic.domain.DTO.LoginResponse;
 import com.vetClinic.domain.DTO.OwnerResponseDTO;

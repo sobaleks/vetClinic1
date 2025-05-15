@@ -2,6 +2,7 @@ package com.vetClinic.service;
 import com.vetClinic.authorization.UserAccess;
 import com.vetClinic.domain.DTO.AppointmentRequestDTO;
 import com.vetClinic.domain.Appointment;
+import com.vetClinic.domain.DTO.AppointmentResponseDTO;
 import com.vetClinic.domain.Pet;
 import com.vetClinic.exeptions.NoPetAppointmentsException;
 import com.vetClinic.exeptions.ObjectNotFoundException;
@@ -22,6 +23,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
@@ -120,7 +122,7 @@ public class AppointmentService {
             throw new IllegalStateException("Врач не работает в это время");
         }
         Appointment appointment = DtoMapper.fromAppointmentRequestDtoToAppointment(dto);
-        userAccess.adminOrDoctorAuthorization();
+        userAccess.adminOrUserAuthorization(dto.getOwnerId());
         return appointmentRepository.save(appointment);
     }
     @Transactional
@@ -163,15 +165,15 @@ public class AppointmentService {
                     .body("У данного пользователя записей нет");
         }
 
-        // Обработка null-значений
-        appointments.forEach(app -> {
-            if (app.getDurationMinutes() == null) {
-                app.setDurationMinutes(30);
-            }
-        });
+        List<AppointmentResponseDTO> responseDTOs = appointments.stream()
+                .map(DtoMapper::fromAppointmentToAppointmentResponseDTO)
+                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(appointments);
+        return ResponseEntity.ok(responseDTOs);
     }
+
+
+
 
     public ResponseEntity<?> getAppointmentsByPetId(int petId) {
         List<Appointment> appointments = appointmentRepository.findByPetIdOrderByDateTimeDesc(petId);

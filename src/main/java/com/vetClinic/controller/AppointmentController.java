@@ -53,7 +53,6 @@ public class AppointmentController {
     public ResponseEntity<?> createAppointment(
             @RequestBody @Valid AppointmentRequestDTO appointmentRequestDTO) {
         logger.info("POST /appointments - Creating new appointment");
-        
         Appointment appointment = appointmentService.createAppointment(appointmentRequestDTO);
         return new ResponseEntity<>(appointment, HttpStatus.CREATED);
     }
@@ -81,8 +80,9 @@ public class AppointmentController {
 
     @GetMapping("/owner/{ownerId}")
     public ResponseEntity<?> getAppointmentsByOwner(@PathVariable int ownerId) {
-        return ResponseEntity.ok(appointmentService.getAppointmentsByOwnerId(ownerId));
+        return appointmentService.getAppointmentsByOwnerId(ownerId);
     }
+
 
     @GetMapping("/pet/{petId}")
     public ResponseEntity<?> getAppointmentsByPet(@PathVariable int petId) {

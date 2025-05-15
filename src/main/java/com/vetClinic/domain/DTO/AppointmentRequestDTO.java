@@ -12,9 +12,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AppointmentRequestDTO {
     private int id;
-    private int doctorId;       // ID ветеринара (int вместо Long)
-    private int petId;         // ID питомца (int вместо Long)
-    private int ownerId;       // ID владельца (int вместо Long)
+    private int doctorId;       // ID ветеринара
+    private int petId;         // ID питомца
+    private int ownerId;       // ID владельца
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateTime;

@@ -1,12 +1,14 @@
 package com.vetClinic.service;
 
 import com.vetClinic.authorization.UserAccess;
+import com.vetClinic.domain.Appointment;
 import com.vetClinic.domain.DTO.LoginResponse;
 import com.vetClinic.domain.DTO.OwnerResponseDTO;
 import com.vetClinic.domain.Owner;
 import com.vetClinic.domain.Pet;
 import com.vetClinic.exeptions.DataAccessException;
 import com.vetClinic.exeptions.ObjectNotFoundException;
+import com.vetClinic.repository.AppointmentRepository;
 import com.vetClinic.repository.DoctorRepository;
 import com.vetClinic.repository.OwnerRepository;
 import com.vetClinic.repository.PetRepository;
@@ -29,17 +31,20 @@ public class OwnerService {
     OwnerRepository ownerRepository;
     PetRepository petRepository;
     DoctorRepository doctorRepository;
+    AppointmentRepository appointmentRepository;
     PasswordEncoder passwordEncoder;
     UserAccess userAccess;
     JwtUtil jwtUtil;
     @Autowired
     public OwnerService(OwnerRepository ownerRepository, PetRepository petRepository,
                         DoctorRepository doctorRepository, PasswordEncoder passwordEncoder,
+                        AppointmentRepository appointmentRepository,
                         UserAccess userAccess, JwtUtil jwtUtil) {
         this.ownerRepository = ownerRepository;
         this.petRepository = petRepository;
         this.doctorRepository = doctorRepository;
         this.passwordEncoder = passwordEncoder;
+        this.appointmentRepository = appointmentRepository;
         this.userAccess = userAccess;
         this.jwtUtil = jwtUtil;
     }
